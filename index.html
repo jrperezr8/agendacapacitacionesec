@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda de Capacitaciones &mdash; Entel ECC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--brand-blue:#005cff;--brand-pink:#fd6c98;--brand-teal:#42e8b4;--brand-orange:#ff3d00;--brand-cyan:#2fcbf1;--bg:#080c14;--bg2:#0f1520;--bg3:#151d2e;--bg4:#1c2640;--border:rgba(0,92,255,0.1);--border2:rgba(0,92,255,0.2);--text:#e8f0ff;--text2:#7a90c0;--text3:#3d5080;--accent:#005cff;--accent2:#4d8fff;--accent-hover:#0047cc;--green:#42e8b4;--amber:#fd6c98;--red:#ff3d00;--valley:#2fcbf1;--shadow:0 4px 24px rgba(0,92,255,0.12);--shadow-lg:0 8px 40px rgba(0,0,0,0.5);--sans:'Inter',sans-serif}
+[data-theme="light"]{--bg:#f0f4ff;--bg2:#ffffff;--bg3:#e8eeff;--bg4:#dce5ff;--border:rgba(0,92,255,0.12);--border2:rgba(0,92,255,0.22);--text:#0a1630;--text2:#3a5090;--text3:#7a90c0;--shadow:0 4px 24px rgba(0,92,255,0.1);--shadow-lg:0 8px 40px rgba(0,92,255,0.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:14px;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.shell{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:232px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.5rem 0;transition:background .3s}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.content{padding:2rem;flex:1}
+.logo{padding:0 1.25rem 1.75rem;font-size:15px;font-weight:800;letter-spacing:-.04em;color:var(--text);line-height:1.2}
+.logo-accent{color:var(--brand-blue)}.logo-sub{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-top:2px;display:block}
+.nav-section{padding:.5rem 1.25rem .25rem;font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--text3);text-transform:uppercase;margin-top:.75rem}
+.nav-item{display:flex;align-items:center;gap:10px;padding:.6rem 1.25rem;cursor:pointer;transition:all .15s;color:var(--text2);font-size:12.5px;font-weight:500;border-left:2px solid transparent;margin:1px 0}
+.nav-item:hover{color:var(--text);background:rgba(0,92,255,.05)}
+.nav-item.active{color:var(--text);border-left-color:var(--accent);background:rgba(0,92,255,.08)}
+.nav-item .icon{width:16px;height:16px;flex-shrink:0;opacity:.6}.nav-item.active .icon{opacity:1}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:9px;padding:2px 6px;border-radius:10px;font-weight:700}
+.nav-badge.green{background:var(--green);color:#080c14}
+.user-block{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid var(--border)}
+.user-chip{display:flex;align-items:center;gap:10px}
+.user-avatar{width:34px;height:34px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.user-name{font-size:12px;font-weight:700;color:var(--text)}.user-role{font-size:10px;color:var(--text3)}
+.role-switch{margin-top:.75rem;display:flex;gap:4px;flex-wrap:wrap}
+.rs-btn{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s}
+.rs-btn:hover,.rs-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.screen{display:none}.screen.active{display:block}
+.page-title{font-size:14px;font-weight:700;color:var(--text)}.page-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.sp-status{display:flex;align-items:center;gap:8px;font-size:11px}
+.sp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sp-dot.connected{background:var(--green);box-shadow:0 0 8px var(--green)}.sp-dot.disconnected{background:var(--red)}
+.sp-dot.connecting{background:var(--amber);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.dark-toggle{width:36px;height:20px;border-radius:10px;border:1px solid var(--border2);background:var(--bg3);cursor:pointer;position:relative;transition:all .2s;padding:0}
+.dark-toggle::after{content:'';width:14px;height:14px;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform .2s,background .2s}
+[data-theme="dark"] .dark-toggle::after{background:var(--brand-cyan);transform:translateX(16px)}
+[data-theme="light"] .dark-toggle::after{background:var(--brand-orange);transform:translateX(0)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.25rem;box-shadow:var(--shadow);transition:background .3s}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+.metric{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.125rem;position:relative;overflow:hidden}
+.metric::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--brand-blue),var(--brand-cyan));opacity:.6}
+.metric-val{font-size:30px;font-weight:800;color:var(--text);letter-spacing:-.04em;line-height:1}
+.metric-lbl{font-size:10px;font-weight:700;color:var(--text3);margin-top:6px;text-transform:uppercase;letter-spacing:.1em}
+.metric-sub{font-size:11px;color:var(--text2);margin-top:4px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.b-green{background:rgba(66,232,180,.12);color:var(--green);border:1px solid rgba(66,232,180,.3)}
+.b-amber{background:rgba(253,108,152,.12);color:var(--amber);border:1px solid rgba(253,108,152,.3)}
+.b-red{background:rgba(255,61,0,.12);color:var(--red);border:1px solid rgba(255,61,0,.3)}
+.b-blue{background:rgba(0,92,255,.12);color:var(--accent2);border:1px solid rgba(0,92,255,.25)}
+.b-valley{background:rgba(47,203,241,.12);color:var(--valley);border:1px solid rgba(47,203,241,.3)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;font-family:var(--sans);cursor:pointer;transition:all .15s;border:1px solid var(--border2);background:var(--bg3);color:var(--text)}
+.btn:hover{background:var(--bg4);border-color:var(--accent)}.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 2px 12px rgba(0,92,255,.35)}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-success{background:rgba(66,232,180,.12);color:var(--green);border-color:rgba(66,232,180,.3)}
+.btn-success:hover{background:rgba(66,232,180,.22)}
+.btn-danger{background:rgba(255,61,0,.1);color:var(--red);border-color:rgba(255,61,0,.25)}
+.btn-danger:hover{background:rgba(255,61,0,.2)}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:6px}.btn:disabled{opacity:.35;cursor:not-allowed}
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:2px;font-size:11px}
+.cal-header{background:var(--bg3);border-radius:6px;padding:.4rem .5rem;font-weight:700;color:var(--text2);text-align:center;font-size:10px}
+.cal-time{padding:.35rem .5rem;color:var(--text3);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:flex-end}
+.cal-cell{background:var(--bg3);border-radius:6px;padding:.3rem .4rem;min-height:36px;border:1px solid var(--border);cursor:pointer;transition:all .15s;position:relative}
+.cal-cell:hover{border-color:var(--accent)}
+.cal-cell.valley{border-color:rgba(47,203,241,.25);background:rgba(47,203,241,.04)}
+.cal-cell.full{opacity:.55;cursor:default}
+.cal-cell.pause{background:var(--bg);cursor:default;opacity:.35}
+.cal-cell.has-me{border-color:var(--accent);background:rgba(0,92,255,.1)}
+.cal-chip{font-size:9px;font-weight:700;border-radius:3px;padding:1px 4px;margin-top:2px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-chip.pending{background:rgba(253,108,152,.2);color:var(--amber)}
+.cal-chip.approved{background:rgba(66,232,180,.15);color:var(--green)}
+.cal-chip.mine{background:rgba(0,92,255,.25);color:#80aaff}
+/* Slots */
+.slots-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:.625rem;margin-bottom:1rem}
+.slot-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.875rem;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
+.slot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;background:transparent;transition:background .18s}
+.slot-card:hover:not(.sc-full)::before{background:var(--accent)}
+.slot-card:hover:not(.sc-full){border-color:var(--accent);box-shadow:var(--shadow)}
+.slot-card.sc-selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,92,255,.3);background:rgba(0,92,255,.07)}
+.slot-card.sc-selected::before{background:var(--accent)}
+.slot-card.sc-valley::before{background:var(--valley)}
+.slot-card.sc-valley.sc-selected{border-color:var(--valley);box-shadow:0 0 0 2px rgba(47,203,241,.3);background:rgba(47,203,241,.07)}
+.slot-card.sc-full{opacity:.5;cursor:default}
+.slot-time{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.03em}
+.slot-label{font-size:10px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+.slot-avail{font-size:11px;margin-top:.5rem;font-weight:600}
+.slot-bar-bg{height:3px;border-radius:2px;background:rgba(255,255,255,.07);margin-top:.5rem;overflow:hidden}
+.slot-bar-fill{height:100%;border-radius:2px;transition:width .3s}
+/* Forms */
+.form-group{margin-bottom:1rem}
+.form-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.4rem;display:block}
+select,input[type=text]{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s}
+select:focus,input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,92,255,.12)}
+select option{background:var(--bg3)}
+.alert{padding:.75rem 1rem;border-radius:10px;font-size:12.5px;margin-bottom:.875rem;display:flex;align-items:flex-start;gap:.625rem;line-height:1.5}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.a-green{background:rgba(66,232,180,.08);border:1px solid rgba(66,232,180,.2);color:#80f0d4}
+.a-blue{background:rgba(0,92,255,.08);border:1px solid rgba(0,92,255,.2);color:#80aaff}
+.a-amber{background:rgba(253,108,152,.08);border:1px solid rgba(253,108,152,.2);color:#fdaac4}
+.a-red{background:rgba(255,61,0,.08);border:1px solid rgba(255,61,0,.2);color:#ff8060}
+.a-valley{background:rgba(47,203,241,.08);border:1px solid rgba(47,203,241,.2);color:#80e0f5}
+/* Requests */
+.req-row{display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.req-row:last-child{border-bottom:none}
+.req-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.req-info{flex:1;min-width:120px}.req-name{font-size:12.5px;font-weight:700;color:var(--text)}
+.req-meta{font-size:10.5px;color:var(--text3);margin-top:1px}.req-actions{display:flex;gap:6px;flex-shrink:0}
+.wait-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.wait-num{width:26px;height:26px;border-radius:6px;background:rgba(253,108,152,.12);border:1px solid rgba(253,108,152,.25);color:var(--amber);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.agent-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(66,232,180,.1);color:var(--green);border:1px solid rgba(66,232,180,.25);margin:3px}
+.slot-block{margin-bottom:1.5rem}
+.slot-block-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;flex-wrap:wrap}
+.slot-block-time{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.04em}
+.slot-block-dur{font-size:11px;color:var(--text3)}
+/* Config */
+.config-row{display:flex;align-items:center;justify-content:space-between;padding:.875rem 0;border-bottom:1px solid var(--border)}
+.config-row:last-child{border-bottom:none}
+.config-label{font-size:13px;font-weight:600;color:var(--text)}.config-sub{font-size:11px;color:var(--text3);margin-top:2px}
+input[type=number]{width:70px;padding:6px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;outline:none}
+input[type=number]:focus{border-color:var(--accent)}
+/* Auth */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:2rem;position:relative;overflow:hidden}
+.auth-bg-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;pointer-events:none}
+.auth-bg-blob.b1{width:400px;height:400px;background:var(--brand-blue);top:-100px;left:-100px}
+.auth-bg-blob.b2{width:300px;height:300px;background:var(--brand-cyan);bottom:-80px;right:-60px}
+.auth-bg-blob.b3{width:200px;height:200px;background:var(--brand-pink);top:50%;right:30%}
+.auth-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.75rem;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:var(--shadow-lg)}
+.auth-logo{font-size:21px;font-weight:800;letter-spacing:-.04em;margin-bottom:.35rem;color:var(--text)}
+.auth-logo span{color:var(--brand-blue)}
+.auth-logo-tag{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:1.5rem;display:block}
+.auth-sub{font-size:12.5px;color:var(--text2);margin-bottom:1.75rem;line-height:1.6}
+.input-wrap{position:relative}
+.input-wrap input{padding-left:36px;text-transform:uppercase;font-weight:700;letter-spacing:.05em}
+.input-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;pointer-events:none}
+.sup-section{margin-top:1.5rem;padding:1rem;background:var(--bg3);border-radius:10px;border:1px solid var(--border)}
+.sup-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:.625rem}
+/* Toast */
+.toast-wrap{position:fixed;top:1.25rem;right:1.25rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:.75rem 1rem;max-width:320px;font-size:12.5px;color:var(--text);box-shadow:var(--shadow-lg);animation:slideIn .25s ease;pointer-events:all;line-height:1.4}
+.toast.t-green{border-left:3px solid var(--green)}.toast.t-red{border-left:3px solid var(--red)}
+.toast.t-blue{border-left:3px solid var(--accent)}.toast.t-amber{border-left:3px solid var(--amber)}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:10000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:2rem;width:100%;max-width:420px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:.35rem}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:1.5rem}
+/* Meet banner */
+.meet-banner{display:none;align-items:center;gap:.75rem;padding:.875rem 1.25rem;background:rgba(0,92,255,.08);border:1px solid rgba(0,92,255,.3);border-radius:12px;margin-bottom:1rem}
+.meet-banner.show{display:flex}
+.meet-icon{font-size:20px;flex-shrink:0}.meet-info{flex:1}
+.meet-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2);margin-bottom:2px}
+.meet-name{font-size:13px;font-weight:700;color:var(--text)}
+.meet-link-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--accent);color:#fff;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0}
+/* Tables */
+.jp-table{width:100%;border-collapse:collapse;font-size:12px}
+.jp-table th{padding:.5rem .75rem;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border)}
+.jp-table td{padding:.5rem .75rem;border-bottom:1px solid var(--border);color:var(--text2)}
+.jp-table tr:last-child td{border-bottom:none}.jp-table tr:hover td{background:rgba(0,92,255,.04);color:var(--text)}
+/* Booking */
+.booking-item{display:flex;align-items:center;gap:.75rem;padding:.75rem;background:var(--bg3);border-radius:10px;margin-bottom:.5rem;border:1px solid var(--border)}
+.bk-time{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.03em;min-width:60px}
+.bk-info{flex:1}.bk-modulo{font-size:12.5px;font-weight:600;color:var(--text)}.bk-meta{font-size:11px;color:var(--text3)}
+/* Semáforo */
+.semaforo{display:flex;align-items:center;gap:8px}
+.sem-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sem-dot.verde{background:var(--green);box-shadow:0 0 8px var(--green)}
+.sem-dot.amarillo{background:#f59e0b;box-shadow:0 0 8px #f59e0b}
+.sem-dot.rojo{background:var(--red);box-shadow:0 0 8px var(--red)}
+/* Perfil agente */
+.perfil-stat{text-align:center;padding:1rem;background:var(--bg3);border-radius:10px;border:1px solid var(--border)}
+.perfil-num{font-size:28px;font-weight:800;color:var(--accent);line-height:1}
+.perfil-lbl{font-size:10px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+.progress-ring-wrap{display:flex;justify-content:center;margin:1rem 0}
+/* Day tabs */
+.day-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.day-tab{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s}
+.day-tab:hover{background:var(--bg3);color:var(--text)}.day-tab.active{background:var(--bg3);border-color:var(--accent);color:var(--accent)}
+.section-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);display:flex;align-items:center;gap:.5rem;margin:.875rem 0 .625rem}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.watermark{position:fixed;bottom:14px;right:18px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);opacity:.3;pointer-events:none;z-index:100}
+@media(max-width:700px){.sidebar{display:none}.grid-4,.grid-3,.grid-2{grid-template-columns:1fr 1fr}.slots-wrap{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authScreen" class="auth-wrap">
+  <div class="auth-bg-blob b1"></div><div class="auth-bg-blob b2"></div><div class="auth-bg-blob b3"></div>
+  <div class="auth-card">
+    <div class="auth-logo">Agenda de <span>Capacitaciones</span></div>
+    <span class="auth-logo-tag">Sistema de gesti&#xF3;n &middot; Entel ECC</span>
+    <div class="auth-sub">Ingresa tu usuario ejecutivo para acceder al sistema.</div>
+    <div class="form-group" style="margin-bottom:1rem">
+      <label class="form-label">Usuario ejecutivo</label>
+      <div class="input-wrap">
+        <span class="input-icon">@</span>
+        <input type="text" id="inputNombre" placeholder="Ej: JRPEREZR" onkeydown="if(event.key==='Enter')entrarComoAgente()">
+      </div>
+      <div id="authStatus" style="font-size:11px;color:var(--red);min-height:16px;margin-top:5px"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px" onclick="entrarComoAgente()">Ingresar al sistema &rarr;</button>
+    <div class="sup-section">
+      <div class="sup-label">Acceso supervisores</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-sm" onclick="enterDemo('jp')">JP</button>
+        <button class="btn btn-sm" onclick="enterDemo('formador')">Formador</button>
+      </div>
+    </div>
+  <div style="display:flex;justify-content:flex-end;margin-top:1.25rem">
+      <button onclick="toggleTheme()" title="Cambiar modo" style="background:none;border:none;cursor:pointer;opacity:.45;transition:opacity .2s;padding:4px" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='.45'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text2)"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-card">
+    <div class="modal-title">&#x1F510; Acceso Administrador</div>
+    <div class="modal-sub">Ingresa tu usuario de administrador.</div>
+    <div class="form-group">
+      <label class="form-label">Usuario Admin</label>
+      <div class="input-wrap">
+        <span class="input-icon">@</span>
+        <input type="text" id="adminUser" placeholder="Usuario administrador" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+    </div>
+    <div id="adminStatus" style="font-size:11px;color:var(--red);min-height:16px;margin-bottom:.75rem"></div>
+    <div style="display:flex;gap:.5rem">
+      <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="adminLogin()">Ingresar</button>
+      <button class="btn" onclick="closeAdminModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appShell" class="shell" style="display:none">
+  <aside class="sidebar">
+    <div class="logo">Agenda de<br><span class="logo-accent">Capacitaciones</span><span class="logo-sub">Entel ECC</span></div>
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active" onclick="showScreen('dashboard',this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard
+    </div>
+    <div class="nav-item" onclick="showScreen('perfil',this)" id="navPerfil">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi Perfil
+    </div>
+    <div class="nav-item" onclick="showScreen('miscapas',this)" id="navMiscapas">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Mis Capas
+      <span class="nav-badge green" id="badgeMisCap" style="display:none">0</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('postular',this)" id="navPostular">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Postular capa
+    </div>
+    <div class="nav-section">Gesti&#xF3;n</div>
+    <div class="nav-item" onclick="showScreen('aprobar',this)" id="navAprobar">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Solicitudes
+      <span class="nav-badge" id="badgeCount" style="display:none">0</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('formador',this)" id="navFormador">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Vista Formador
+      <span class="nav-badge" id="badgeFormador" style="display:none;background:var(--valley);color:#080c14">0</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('jpview',this)" id="navJPView">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18M9 21V9"/></svg>Dashboard JP
+    </div>
+    <div class="nav-item" onclick="showScreen('resumen',this)" id="navResumen">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Resumen Ejecutivo
+    </div>
+    <div class="nav-item" onclick="showScreen('config',this)" id="navConfig">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>Config / Admin
+    </div>
+    <div class="user-block">
+      <div class="user-chip">
+        <div class="user-avatar" id="userAvatar">AG</div>
+        <div><div class="user-name" id="userName">Demo</div><div class="user-role" id="userRole">Agente</div></div>
+      </div>
+      <div class="role-switch" id="roleSwitcher">
+        <button class="rs-btn active" onclick="switchRole('agente',this)">Agente</button>
+        <button class="rs-btn" onclick="switchRole('jp',this)">JP</button>
+        <button class="rs-btn" onclick="switchRole('formador',this)">Formador</button>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <div><div class="page-title" id="pageTitle">Dashboard</div><div class="page-sub" id="pageSub">Semana actual</div></div>
+      <div style="display:flex;align-items:center;gap:1rem">
+        <button class="dark-toggle" onclick="toggleTheme()" title="Modo oscuro/claro"></button>
+        <div class="sp-status"><div class="sp-dot connecting" id="spDot"></div><span id="spLabel" style="color:var(--text3)">Conectando&hellip;</span></div>
+        <button class="btn btn-sm" onclick="logout()">Salir</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="screen active" id="screen-dashboard">
+        <div class="grid-4" style="margin-bottom:1.25rem">
+          <div class="metric"><div class="metric-val" id="m1">0</div><div class="metric-lbl">Capas hoy</div><div class="metric-sub" id="m1s">Con agentes</div></div>
+          <div class="metric"><div class="metric-val" id="m2">0</div><div class="metric-lbl">Pendientes</div><div class="metric-sub">Esperan aprobaci&#xF3;n</div></div>
+          <div class="metric"><div class="metric-val" id="m3">0</div><div class="metric-lbl">Aprobados</div><div class="metric-sub">Esta semana</div></div>
+          <div class="metric"><div class="metric-val" id="m4">0</div><div class="metric-lbl">Asistencia real</div><div class="metric-sub" id="m4s">Confirmada</div></div>
+        </div>
+        <!-- Calendario semanal -->
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-header">
+            <div class="card-title">&#x1F4C5; Calendario semanal</div>
+            <div style="display:flex;gap:8px;font-size:10px;color:var(--text3)">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:rgba(66,232,180,.4);display:inline-block"></span>Aprobado</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:rgba(253,108,152,.4);display:inline-block"></span>Pendiente</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:rgba(0,92,255,.4);display:inline-block"></span>Mi capa</span>
+            </div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">Actividad reciente</div><span class="badge b-blue">HOY</span></div><div id="recentActivity"></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Ocupaci&#xF3;n de hoy</div></div><div id="todayTimeline"></div></div>
+        </div>
+      </div>
+
+      <!-- PERFIL -->
+      <div class="screen" id="screen-perfil">
+        <div class="grid-2" style="margin-bottom:1rem">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Mi perfil de capacitaci&#xF3;n</div></div>
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
+              <div style="width:56px;height:56px;border-radius:14px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0" id="perfilAvatar">AG</div>
+              <div><div style="font-size:18px;font-weight:800;color:var(--text)" id="perfilNombre">—</div><div style="font-size:12px;color:var(--text3)" id="perfilJP">JP: —</div><div style="font-size:11px;color:var(--text3)" id="perfilServicio">—</div></div>
+            </div>
+            <div class="grid-3" style="gap:.5rem;margin-bottom:1rem">
+              <div class="perfil-stat"><div class="perfil-num" id="pStat1">0</div><div class="perfil-lbl">Capas este mes</div></div>
+              <div class="perfil-stat"><div class="perfil-num" id="pStat2">0</div><div class="perfil-lbl">Asistidas total</div></div>
+              <div class="perfil-stat"><div class="perfil-num" id="pStat3">0%</div><div class="perfil-lbl">Cumplimiento</div></div>
+            </div>
+            <!-- Progress bar hacia meta mensual -->
+            <div style="margin-bottom:1rem">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:.4rem"><span>Meta mensual (4 capas)</span><span id="perfilProgPct">0%</span></div>
+              <div style="height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden">
+                <div id="perfilProgBar" style="height:100%;border-radius:4px;background:var(--accent);transition:width .6s;width:0%"></div>
+              </div>
+            </div>
+            <div id="perfilBadges"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Historial personal</div></div>
+            <div id="perfilHistorial"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIS CAPAS -->
+      <div class="screen" id="screen-miscapas">
+        <div class="alert a-blue" style="margin-bottom:1rem"><div class="alert-icon">&#x2139;</div><div>Tus capas agendadas. Puedes <strong>cancelar</strong> cualquiera y el cupo se liberar&#xE1; autom&#xE1;ticamente para el siguiente en lista de espera.</div></div>
+        <div id="misCapasContent"></div>
+      </div>
+
+      <!-- POSTULAR -->
+      <div class="screen" id="screen-postular">
+        <div class="meet-banner" id="meetBanner">
+          <div class="meet-icon">&#x1F4F9;</div>
+          <div class="meet-info"><div class="meet-label">Aula virtual del formador</div><div class="meet-name" id="meetFormadorName">&mdash;</div></div>
+          <a href="#" target="_blank" id="meetLinkBtn" class="meet-link-btn">&#x1F4F9; Unirse al Meet</a>
+        </div>
+        <div class="grid-2" style="margin-bottom:1.25rem">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Datos de postulaci&#xF3;n</div></div>
+            <div class="form-group"><label class="form-label">Usuario ejecutivo</label><div id="agenteDisplay" style="padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;font-size:13px;font-weight:800;color:var(--accent)"></div></div>
+            <div class="form-group"><label class="form-label">Jefe directo (JP)</label><div id="jpDisplay" style="padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text2)"></div></div>
+            <div class="form-group">
+              <label class="form-label">Semana / D&#xED;a</label>
+              <select id="postDia" onchange="renderPostSlots()">
+                <option value="lun">Lunes 14 abr</option><option value="mar">Martes 15 abr</option>
+                <option value="mie">Mi&#xE9;rcoles 16 abr</option><option value="jue">Jueves 17 abr</option><option value="vie">Viernes 18 abr</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">M&#xF3;dulo de capacitaci&#xF3;n</label>
+              <select id="postModulo" onchange="onModuleChange()">
+                <option value="Navegacion">Navegaci&#xF3;n</option>
+                <option value="Habilidades blandas">Habilidades blandas</option>
+              </select>
+            </div>
+            <div id="slotSelectedInfo" style="display:none" class="alert a-blue"><div class="alert-icon">&#x25CE;</div><div id="slotSelectedText"></div></div>
+            <div id="duplicateWarning" style="display:none" class="alert a-amber"><div class="alert-icon">&#x26A0;</div><div>Ya tienes una capa de este m&#xF3;dulo esta semana. No puedes repetir la misma tem&#xE1;tica.</div></div>
+            <div id="postNotif"></div>
+            <div style="display:flex;gap:.5rem;margin-top:.5rem">
+              <button class="btn btn-primary" id="btnPostular" onclick="submitPostulation()" disabled>Enviar solicitud</button>
+              <button class="btn btn-danger btn-sm" id="btnEspera" style="display:none" onclick="joinWaitList()">Lista de espera</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Leyenda</div></div>
+            <div style="display:flex;flex-direction:column;gap:.5rem;font-size:12px;margin-bottom:1rem">
+              <div style="display:flex;align-items:center;gap:.5rem"><div style="width:12px;height:12px;border-radius:3px;background:rgba(47,203,241,.3);flex-shrink:0"></div><span style="color:var(--text2)">Horario valle (15:00&ndash;17:00) &mdash; <strong style="color:var(--valley)">prioridad</strong></span></div>
+              <div style="display:flex;align-items:center;gap:.5rem"><div style="width:12px;height:12px;border-radius:3px;background:rgba(0,92,255,.3);flex-shrink:0"></div><span style="color:var(--text2)">Disponible</span></div>
+              <div style="display:flex;align-items:center;gap:.5rem"><div style="width:12px;height:12px;border-radius:3px;background:rgba(253,108,152,.25);flex-shrink:0"></div><span style="color:var(--text2)">Casi lleno</span></div>
+              <div style="display:flex;align-items:center;gap:.5rem"><div style="width:12px;height:12px;border-radius:3px;background:rgba(255,61,0,.2);flex-shrink:0"></div><span style="color:var(--text2)">Lleno &mdash; lista de espera</span></div>
+            </div>
+            <div class="alert a-valley"><div>Sistema bloquea el mismo m&#xF3;dulo dos veces en la semana. Capas de 60 min &middot; 4 cupos m&#xE1;x.</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Selecciona horario</div><div class="day-tabs" id="dayTabs"></div></div>
+          <div class="section-label"><span style="color:var(--valley)">&#x2605; Horario Valle &mdash; 15:00&ndash;17:00</span></div>
+          <div class="slots-wrap" id="valleySlots"></div>
+          <div class="section-label">Horario regular</div>
+          <div class="slots-wrap" id="regularSlots"></div>
+        </div>
+      </div>
+
+      <!-- APROBAR -->
+      <div class="screen" id="screen-aprobar">
+        <div class="grid-3" style="margin-bottom:1.25rem">
+          <div class="metric"><div class="metric-val" id="ap1">0</div><div class="metric-lbl">Pendientes</div></div>
+          <div class="metric"><div class="metric-val" id="ap2">0</div><div class="metric-lbl">Aprobados hoy</div></div>
+          <div class="metric"><div class="metric-val" id="ap3">0</div><div class="metric-lbl">Rechazados hoy</div></div>
+        </div>
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-header"><div class="card-title">Cola de solicitudes</div><span class="badge b-amber" id="pendBadge">0 pendientes</span></div>
+          <div id="pendList"><p style="font-size:13px;color:var(--text3)">Sin solicitudes pendientes.</p></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Lista de espera</div><button class="btn btn-sm" onclick="renderAprobar()">&#x21BA; Actualizar</button></div>
+          <div id="waitListView"><p style="font-size:13px;color:var(--text3)">Sin agentes en espera.</p></div>
+        </div>
+      </div>
+
+      <!-- FORMADOR -->
+      <div class="screen" id="screen-formador">
+        <div class="alert a-green" style="margin-bottom:1rem"><div class="alert-icon">&#x2713;</div><div>Confirma asistencia real de cada agente usando el bot&#xF3;n <strong>Confirmar asistencia</strong>. Esto actualiza el indicador de cumplimiento.</div></div>
+        <div id="formadorBlocks"></div>
+      </div>
+
+      <!-- DASHBOARD JP -->
+      <div class="screen" id="screen-jpview">
+        <div class="grid-4" style="margin-bottom:1.25rem">
+          <div class="metric"><div class="metric-val" id="jp-m1">0</div><div class="metric-lbl">Agentes en capa</div><div class="metric-sub">Semana actual</div></div>
+          <div class="metric"><div class="metric-val" id="jp-m2">0</div><div class="metric-lbl">Asistencia real</div><div class="metric-sub">Confirmada</div></div>
+          <div class="metric"><div class="metric-val" id="jp-m3">0</div><div class="metric-lbl">Dotaci&#xF3;n activa</div><div class="metric-sub">Total agentes</div></div>
+          <div class="metric"><div class="metric-val" id="jp-m4">0%</div><div class="metric-lbl">Adherencia global</div><div class="metric-sub">Semana actual</div></div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:1rem;align-items:center;flex-wrap:wrap">
+          <button class="day-tab active" id="jpTab1" onclick="switchJPTab(1)">Sem&#xE1;foro JP</button>
+          <button class="day-tab" id="jpTab2" onclick="switchJPTab(2)">Comparativa semanal</button>
+          <button class="day-tab" id="jpTab3" onclick="switchJPTab(3)">Hist&#xF3;rico agentes</button>
+          <button class="day-tab" id="jpTab4" onclick="switchJPTab(4)">Dotaci&#xF3;n</button>
+          <button class="btn btn-sm btn-primary" style="margin-left:auto" onclick="exportAsistencia()">&#x2B07; Excel hist&#xF3;rico</button>
+        </div>
+        <div id="jpTabContent1">
+          <div class="grid-2" style="margin-bottom:1rem">
+            <div class="card"><div class="card-header"><div class="card-title">&#x1F6A6; Sem&#xE1;foro de adherencia por JP</div></div><div id="semaforoList"></div></div>
+            <div class="card"><div class="card-header"><div class="card-title">Gr&#xE1;fico de participaci&#xF3;n</div></div><canvas id="jpChart" height="200"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Detalle de solicitudes aprobadas</div></div>
+            <div style="overflow-x:auto"><table class="jp-table"><thead><tr><th>JP</th><th>Agente</th><th>M&#xF3;dulo</th><th>D&#xED;a</th><th>Horario</th><th>Formador</th><th>Asistencia</th></tr></thead><tbody id="jpTableBody"></tbody></table></div>
+          </div>
+        </div>
+        <div id="jpTabContent2" style="display:none">
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-header"><div class="card-title">Comparativa semanal &mdash; agentes capacitados</div></div>
+            <canvas id="weekChart" height="200"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Tendencia por m&#xF3;dulo</div></div>
+            <div id="moduleTrend"></div>
+          </div>
+        </div>
+        <div id="jpTabContent3" style="display:none">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Hist&#xF3;rico de capacitaciones por agente</div></div>
+            <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap">
+              <input type="text" id="agentSearch" placeholder="Buscar agente..." style="max-width:220px" oninput="filterAgentHistory()">
+              <select id="jpFilterHist" onchange="filterAgentHistory()" style="max-width:180px"><option value="">Todos los JP</option></select>
+            </div>
+            <div style="overflow-x:auto"><table class="jp-table">
+              <thead><tr><th>Agente</th><th>JP</th><th>M&#xF3;dulo</th><th>D&#xED;a</th><th>Horario</th><th>Formador</th><th>Veces</th></tr></thead>
+              <tbody id="historyTableBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+        <div id="jpTabContent4" style="display:none">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Dotaci&#xF3;n de agentes</div>
+              <div style="display:flex;gap:.5rem">
+                <input type="text" id="dotSearch" placeholder="Buscar..." style="max-width:200px;padding:5px 10px" oninput="filterDotacion()">
+                <select id="dotJPFilter" onchange="filterDotacion()" style="max-width:180px"><option value="">Todos los JP</option></select>
+              </div>
+            </div>
+            <div style="overflow-x:auto"><table class="jp-table">
+              <thead><tr><th>Usuario</th><th>Nombre</th><th>JP</th><th>Servicio</th><th>Capas asistidas</th><th>Cumplimiento</th><th>&#xDA;ltimo m&#xF3;dulo</th></tr></thead>
+              <tbody id="dotacionTableBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESUMEN EJECUTIVO -->
+      <div class="screen" id="screen-resumen">
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Resumen ejecutivo mensual</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">Generado autom&#xE1;ticamente &middot; Abril 2025</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="printResumen()">&#x1F5A8; Imprimir / PDF</button>
+          </div>
+          <div id="resumenContent"></div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div class="screen" id="screen-config">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Links Meet / Aula Virtual por Formador</div></div>
+            <div class="alert a-blue" style="margin-bottom:1rem"><div class="alert-icon">&#x2139;</div><div>El link se muestra al agente cuando tiene cupo aprobado.</div></div>
+            <div id="formadorLinks"></div>
+            <button class="btn btn-primary" style="margin-top:1rem" onclick="saveFormadorLinks()">&#x1F4BE; Guardar links</button>
+            <div id="linksStatus" style="margin-top:.75rem"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">SharePoint &middot; Forms &middot; Excel</div></div>
+            <div class="form-group"><label class="form-label">URL Microsoft Forms</label><input type="text" id="cfgFormsUrl" placeholder="https://forms.office.com/..."></div>
+            <div style="display:flex;gap:.5rem;margin-bottom:1rem"><button class="btn btn-primary btn-sm" onclick="saveFormsConfig()">Guardar</button><button class="btn btn-sm" onclick="testForms()">Abrir formulario</button></div>
+            <div id="configStatus"></div>
+            <div class="form-group"><label class="form-label">URL Excel asistencia hist&#xF3;rica</label><input type="text" id="cfgExcelUrl" placeholder="https://grupoentel-my.sharepoint.com/..."></div>
+            <button class="btn btn-success btn-sm" onclick="openExcel()" style="margin-bottom:1rem">&#x1F4CA; Abrir Excel</button>
+            <div class="form-group"><label class="form-label">URL Dotaci&#xF3;n Web (SharePoint)</label><input type="text" id="cfgDotaUrl" value="https://grupoentel-my.sharepoint.com/:x:/r/personal/jrperezr_entel_cl/_layouts/15/Doc.aspx?sourcedoc=%7B9FEE3844-E4B0-4B56-BEEA-91C6A37C5551%7D&file=Dota%20Web%20Capacitaciones.xlsx&action=default&mobileredirect=true"></div>
+            <div style="display:flex;gap:.5rem"><button class="btn btn-success btn-sm" onclick="openDota()">&#x1F4CB; Abrir Dotaci&#xF3;n</button><button class="btn btn-primary btn-sm" onclick="saveDotaUrl()">Guardar link</button></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <div class="card-header"><div class="card-title">Par&#xE1;metros operacionales</div></div>
+          <div class="grid-2">
+            <div>
+              <div class="config-row"><div><div class="config-label">Cupos m&#xE1;ximos por capa</div><div class="config-sub">Agentes por bloque</div></div><input type="number" id="cfgCupos" value="4" min="1" max="10" onchange="CFG.cuposMax=+this.value;renderPostSlots()"></div>
+              <div class="config-row"><div><div class="config-label">Intervalo entre capas (min)</div></div><input type="number" id="cfgIntervalo" value="30" min="15" max="60" onchange="CFG.intervalo=+this.value;renderPostSlots()"></div>
+              <div class="config-row"><div><div class="config-label">Meta mensual (capas)</div><div class="config-sub">Por agente</div></div><input type="number" id="cfgMeta" value="4" min="1" max="12" onchange="CFG.metaMensual=+this.value"></div>
+            </div>
+            <div>
+              <div class="config-row"><div><div class="config-label">Inicio horario valle</div></div><input type="text" id="cfgValleyStart" value="15:00" style="width:80px"></div>
+              <div class="config-row"><div><div class="config-label">Fin horario valle</div></div><input type="text" id="cfgValleyEnd" value="17:00" style="width:80px"></div>
+              <div class="config-row"><div><div class="config-label">Pausa formadores</div><div class="config-sub">Sin capas</div></div><span style="font-size:12px;color:var(--text2)">13:00&ndash;14:00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="watermark">JRPEREZR X EC CH</div>
+<div class="toast-wrap" id="toastWrap"></div>
+<script>
+const DOTACION = [{"u": "BALVIAL", "n": "BARBARA JESUS ALVIAL", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "MARTHA DE LA CONSOLACION PEREZ OCARIZ", "s": "RECLAMOS"}, {"u": "CCARAYA", "n": "CARLA CONSTANZA ARAYA", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "RECLAMOS"}, {"u": "CDIAZE", "n": "CAROLINA ANTONIETA DIAZ", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "RECLAMOS"}, {"u": "DALFARO", "n": "DANIELA ANDREA ALFARO", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "SUSAN VERONICA COFRE MARTINEZ", "s": "RECLAMOS"}, {"u": "ECRESPOR", "n": "ELIZABETH PAULINA CRESPO", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "MARIA SOLEDAD BUSTAMANTE BUSTAMANTE", "s": "RECLAMOS"}, {"u": "EMUNOZO", "n": "ESPERANZA ADRIANA MUNOZ", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "FAVILAG", "n": "FRANCISCA ANDREA AVILA", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "RECLAMOS"}, {"u": "FSALASR", "n": "FRANCISCA JAVIERA SALAS", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "RECLAMOS"}, {"u": "KGAETEB", "n": "KARINA ESTER GAETE", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "KROCHAT", "n": "KRISHNA JAVIERA ROCHAT", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "LCANTILLANA", "n": "LUCIANO ALEXIS CANTILLANA", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "LSUZARRA", "n": "LIUZMAR MARIANNI SUZARRA", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "MECHETO", "n": "MARLAINE COROMOTO ECHETO", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "JAVIER ARMANDO ROJAS BRAVO", "s": "RECLAMOS"}, {"u": "MFCOLLADO", "n": "MARCELA FLORENCIA COLLADO", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "JHONNY DIXON TORRES MEZA", "s": "RECLAMOS"}, {"u": "MFEHRENBERG", "n": "MACARENA DENISSE FEHRENBERG", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "NCORREAR", "n": "NATALIA MAGDALENA CORREA", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "RROJASU", "n": "RODOLFO ANDRES ROJAS", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "TSOLIS", "n": "TABITA VIOLETA SOLIS", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "RECLAMOS"}, {"u": "VBARRAZA", "n": "VIVIAN CRISTINA BARRAZA", "jp": "KROMERO", "jpn": "KATHERINE ELENA ROMERO ALARCON", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "RECLAMOS"}, {"u": "ACORDOVA", "n": "ANGEL RODRIGO CORDOVA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "RECLAMOS"}, {"u": "AGORELLANA", "n": "ALEJANDRA PIA ORELLANA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "CLAUDIO ERWEINS DEL CAMPO GONZALEZ", "s": "RECLAMOS"}, {"u": "CSALGADO", "n": "CAROLINA FERNANDA SALGADO", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "RECLAMOS"}, {"u": "DPINAC", "n": "DIEGO IGNACIO PIÑA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "RECLAMOS"}, {"u": "FHSOTO", "n": "FRANCISCO HUMBERTO SOTO", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "GJARA", "n": "GIOVANNA CONSTANZA JARA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "ALEXANDRO JAVIER TELLO ALEGRIA", "s": "RECLAMOS"}, {"u": "IVERAG", "n": "IAN FRANCO VERA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "ALEXANDRO JAVIER TELLO ALEGRIA", "s": "RECLAMOS"}, {"u": "JCABRERAV", "n": "JENNIFERT FRANCISCA CABRERA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "SUSAN VERONICA COFRE MARTINEZ", "s": "RECLAMOS"}, {"u": "JPMUNOZG", "n": "JOSEFA PATRICIA MUNOZ", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "MFUENTESJ", "n": "MARICEL SOLANGE FUENTES", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "RECLAMOS"}, {"u": "MHERNANTESM", "n": "MACARENA HERNANTES", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "ELINIO ANTONIO BARRIAS BRAVO", "s": "RECLAMOS"}, {"u": "MHERRERAO", "n": "MARIA JOSE HERRERA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "MMLOPEZN", "n": "MATIAS NICOLAS LOPEZ", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "NGODOYU", "n": "NINOSKA SARALEC GODOY", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "RECLAMOS"}, {"u": "NOLIVA", "n": "NICOL ALEJANDRA OLIVA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "SUSAN VERONICA COFRE MARTINEZ", "s": "RECLAMOS"}, {"u": "YFERRADAM", "n": "YARITTZA CAROLINNE FERRADA", "jp": "MABARCA", "jpn": "MARIA EUGENIA ABARCA URIBE", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "AOLIVA", "n": "ANGELO GIOVANNI OLIVA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "RECLAMOS"}, {"u": "BAMADRIDV", "n": "BEATRIZ ANDREA MADRID", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "RECLAMOS"}, {"u": "CVIVAR", "n": "CONSTANZA BELEN VIVAR", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "DCORTESM", "n": "DANIEL ANDRES CORTES", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "RECLAMOS"}, {"u": "EGOMEZF", "n": "ELISA VALENTINA GOMEZ", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "RECLAMOS"}, {"u": "FHERRERAB", "n": "FABIAN IGNACIO HERRERA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "GSEPULVEDAM", "n": "GREGORY EDISON SEPULVEDA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "CLAUDIO ERWEINS DEL CAMPO GONZALEZ", "s": "RECLAMOS"}, {"u": "JCAIMANQUE", "n": "JOAQUIN MANUEL CAIMANQUE", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "RECLAMOS"}, {"u": "KESPINOZAV", "n": "KATHERINE VANESSA ESPINOZA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "RECLAMOS"}, {"u": "MINGUNZA", "n": "MARISOL ALEJANDRA INGUNZA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "RECLAMOS"}, {"u": "NRETAMAL", "n": "NATALIA CAROLINA RETAMAL", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "RECLAMOS"}, {"u": "OPINTOJ", "n": "OMAR ENRIQUE PINTO", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "RECLAMOS"}, {"u": "PORELLANAM", "n": "PAULA ANDREA ORELLANA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "RECLAMOS"}, {"u": "PTAPIAP", "n": "PABLO FELIPE TAPIA", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "RECLAMOS"}, {"u": "VJOFRE", "n": "VERONICA DANIELA JOFRE", "jp": "", "jpn": "ROJAS BRAVO JAVIER", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "RECLAMOS"}, {"u": "WVALDES", "n": "WALTER FRANCISCO VALDES", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "RICARDO ADOLFO ESTAY VALENZUELA", "s": "TECNICO"}, {"u": "FAMUNOZG", "n": "FERNANDO ALFREDO MUÑOZ", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "CARLOS ALBERTO LETELIER ALARCON", "s": "TECNICO"}, {"u": "VDBUSTAMANTE", "n": "VICTORIA ANDREA BUSTAMANTE", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "TECNICO"}, {"u": "CVMORALES", "n": "CARLA VANESA MORALES", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "PMORENOC", "n": "PABLO RODRIGO MORENO", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "TECNICO"}, {"u": "MBERNALESD", "n": "MARIA JESUS BERNALES", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "MARTHA DE LA CONSOLACION PEREZ OCARIZ", "s": "TECNICO"}, {"u": "DBCORTES", "n": "DANIELA BEATRIZ CORTES", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "GACUNAC", "n": "GENESIS IRALI ACUÑA", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "ALEXANDRO JAVIER TELLO ALEGRIA", "s": "TECNICO"}, {"u": "GARIASDU", "n": "GABRIELA ALEJANDRA SUSANA ARIAS", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "ALEXANDRO JAVIER TELLO ALEGRIA", "s": "TECNICO"}, {"u": "EALEYTONG", "n": "EVA ALLISON LEYTON", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "JJUAREZ", "n": "JUDITH MARIA CANESSA", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "KGONZALEZO", "n": "KAREN PAULINA GONZÁLEZ", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "NMCONTRERAS", "n": "NICOLAS MATIAS CONTRERAS", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "STENORIOM", "n": "SANDRA PAOLA TENORIO", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "ASEREYS", "n": "AYLINNE SCARLETT SEREY", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "ABARRERAR", "n": "ANAMARIA BARRERA", "jp": "AROBLESC", "jpn": "ANGELICA FERNANDA ROBLES CONTRERAS", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "NLUVECE", "n": "NELLY FABIOLA LUVECCE", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "FCONTRERASA", "n": "FRANCISCO EDUARDO CONTRERAS", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "JHENRIQUEZB", "n": "JAVIERA AURA HENRIQUEZ", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "RICARDO ADOLFO ESTAY VALENZUELA", "s": "TECNICO"}, {"u": "MCRUZO", "n": "MARGARITA CRUZ", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "SUSAN VERONICA COFRE MARTINEZ", "s": "TECNICO"}, {"u": "MVASQUEZP", "n": "MABEL ALEJANDRA VASQUEZ", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "NCHIRINOS", "n": "NACHIRLYS MARCELYS CHIRINOS", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "TGUAJARDOS", "n": "TAMARA ALEJANDRA GUAJARDO", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "GROAZ", "n": "GISELLE ESTRELLA ROA", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "CMENAP", "n": "CATHERINE SOLANGE MENA", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "EADARO", "n": "ELISA BEATRIZ ADARO", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "CAROLINA SOLEDAD SALAS DENIS", "s": "TECNICO"}, {"u": "NFLORESS", "n": "NATALIE ELIZABETH ANNAIS FLORES", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "MBRUCE", "n": "MELISSA LISSETTE BRUCE", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "CBAEZAP", "n": "CATALINA ALEJANDRA BAEZA", "jp": "JRPEREZR", "jpn": "JOSE RICARDO PEREZ RAMONIS", "f": "CAROLINA SOLEDAD SALAS DENIS", "s": "TECNICO"}, {"u": "ACMORENOM", "n": "ARAMI CONSTANZA MORENO", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "ACONTADOR", "n": "ALEJANDRO SAUL CONTADOR", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "TECNICO"}, {"u": "AMARQUEZG", "n": "ANGELICA MARQUEZ", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "TECNICO"}, {"u": "AMORALESZ", "n": "ANGELINA DEL CARMEN MORALES", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "FCAMPOS", "n": "FLAVIO ALDO CAMPOS", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "ANDREA ROXANA GARAY CARRIEL", "s": "TECNICO"}, {"u": "GPEREZG", "n": "GABRIELA VALESKA PEREZ", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "IHUMANA", "n": "INGRID MAGDALENA HUMAÑA", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "KJARAV", "n": "KARLA FRACISCA JARA", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "KLHERRERA", "n": "KARLA LISBELIS HERRERA", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "MASTUDILLOS", "n": "MARIA MAGDALENA ASTUDILLO", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "MFPASTENA", "n": "MAGALY FABIOLA PASTEN", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "CARLOS ALBERTO LETELIER ALARCON", "s": "TECNICO"}, {"u": "MMACUNA", "n": "MARGARITA MARIA ACUÑA", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "ALEXANDRO JAVIER TELLO ALEGRIA", "s": "TECNICO"}, {"u": "RRMUNOZA", "n": "RODRIGO ANDRES MUÑOZ", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "SAESPINOZAL", "n": "SEBASTIAN ANDREE ESPINOZA", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "SKVERA", "n": "SACHA KARYN VERA", "jp": "MLECANDA", "jpn": "MARIA DE MONTSERRAT LECANDA DUCH", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "ICABRERAA", "n": "IRMA DEL CARMEN CABRERA", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "GARRIAGADA", "n": "GENESIS ESTEFANIA ARRIAGADA", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "ANDREA ROXANA GARAY CARRIEL", "s": "TECNICO"}, {"u": "MJEREZV", "n": "MONSERRAT YANIRA JEREZ", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "FPOBLETEM", "n": "FELIPE ANTONIO POBLETE", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "ANAPOLITANO", "n": "ANGELA NAPOLITANO", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "FAMARTINEZS", "n": "FERNANDO ANTONIO MARTINEZ", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "ANGONZALEZS", "n": "ALLISON NICOLE GONZALEZ", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "MARTHA DE LA CONSOLACION PEREZ OCARIZ", "s": "TECNICO"}, {"u": "CBUSTAMANTEC", "n": "CATALINA VICTORIA BUSTAMANTE", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "CCELEDONA", "n": "CARLOS FELIPE CELEDON", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "MESANHUEZA", "n": "MIRTA ELENA SANHUEZA", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "SPAINEVILO", "n": "SONIA JAVIERA PAINEVILO", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "DLUNA", "n": "DANIEL GONZALO LUNA", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "JHONNY DIXON TORRES MEZA", "s": "TECNICO"}, {"u": "CEVENEGAS", "n": "CLAUDIA EUGENIA VENEGAS", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "RTAPIAC", "n": "ROLANDO ANTONIO TAPIA", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "NVARGASM", "n": "NATALY CONSTANZA VARGAS", "jp": "YMORA", "jpn": "YOSELYN MACARENA MORA ESCOBAR", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "ANUNEZW", "n": "ANGIE IRISELLA NUÑEZ", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "BYRON PATRICIO JAVIER SALINAS CORTES", "s": "TECNICO"}, {"u": "BPINO", "n": "BORIS ESTEBAN PINO", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "TECNICO"}, {"u": "CAMORALESD", "n": "CLAUDIA ANDREA MORALES", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "RICARDO ESTAY VALENZUELA", "s": "TECNICO"}, {"u": "LMIRAH", "n": "LORETO ALEJANDRA MIRA", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "MCASTILLOG", "n": "MARCELA CARMEN CASTILLO", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "DANIELA CONSTANZA JELDRES SUAREZ", "s": "TECNICO"}, {"u": "MDDIAZ", "n": "MONSERRAT ALEJANDRA DIAZ", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "TECNICO"}, {"u": "MFICAU", "n": "MARISOL ANDREA FICA", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "JAVIER ARMANDO ROJAS BRAVO", "s": "TECNICO"}, {"u": "PAIBARRAB", "n": "PAULINA ALEJANDRA IBARRA", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "PALMONACID", "n": "PAULA ANDREA ALMONACID", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "RBENAVIDES", "n": "ROMINA SOLEDAD BENAVIDES", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "CAROLINA SOLEDAD SALAS DENIS", "s": "TECNICO"}, {"u": "SVILLA", "n": "SOFIA ANGELICA VILLA", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "MVIDALJ", "n": "MARIA PAZ VIDAL", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "AURORA ESTEFANIA MARCHANT MAYOL", "s": "TECNICO"}, {"u": "CMUOZ", "n": "CLAUDIA ANDREA MUÑOZ", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "ALFONZO ANDRES GONZALEZ ORTIZ", "s": "TECNICO"}, {"u": "MRIVEROST", "n": "MATIAS IGNACIO RIVEROS", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "LINZUNZA", "n": "LILIAN FRANSHESKA INZUNZA", "jp": "AMARCHANTM", "jpn": "MARCHANT MAYOL AURORA ESTEFANIA", "f": "JHONNY DIXON TORRES MEZA", "s": "TECNICO"}, {"u": "EQUINTEROP", "n": "EDMARI ALEJANDRA QUINTERO", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "CBFIGUEROAM", "n": "CONSTANZA BELEN FIGUEROA", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "ABEZMALINOVIC", "n": "ANDRES HERIBERTO BEZMALINOVIC", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "JICAMPOSR", "n": "JULIO IGNACIO CAMPOS", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "SUSAN VERONICA COFRE MARTINEZ", "s": "TECNICO"}, {"u": "EBARRIASB", "n": "ELINIO ANTONIO BARRIAS", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "MPMARTINEZC", "n": "MADELEIN PAOLA MARTINEZ", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "OORELLANAC", "n": "OSCAR ABEL ORELLANA", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "OQUEZADA", "n": "OSCAR BERNARDO MATIAS QUEZADA", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "GWALDROP", "n": "GREGORIA JOSEFINA WALDROP", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "PTORREST", "n": "PAULA ANDREA TORRES", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "KCREYES", "n": "KATHERINE SABRINA REYES", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "ALUENGO", "n": "ADISON PATRICIO LUENGO", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "JECHEVERRIAB", "n": "JANE MARIETTE ECHEVERRÍA", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "FAMORALESM", "n": "FELIPE ANDRES MORALES", "jp": "RVBRAVO", "jpn": "ROBERTO HERNAN BRAVO VILLEGAS", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "LARROSPIDEP", "n": "LUCIANO ALEJANDRO ARROSPIDE", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "MGAVILAN", "n": "MARÍA FERNANDA GAVILÁN", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "HAGUTIERREZ", "n": "HAROLD ALEXANDER GUTIERREZ", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "MLINCHEO", "n": "MOIRA FERNANDA LINCHEO", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "FHERNANDEZ", "n": "FABIAN EDUARDO HERNANDEZ", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "FESPINOZA", "n": "FRANCISCA ANGELICA ESPINOZA", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "SSOTO", "n": "SEBASTIAN ADOLFO SOTO", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "JBGONZALEZA", "n": "JENNIFER BELEN GONZALEZ", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "ACASTROB", "n": "ARIEL GERARDO CASTRO", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "VJULIO", "n": "VICTORIA DE LOURDES JULIO", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "OVILLATORO", "n": "OCTAVIO ARTURO VILLATORO", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "JAHUMADA", "n": "JUDITH EUGENIA AHUMADA", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "TECNICO"}, {"u": "VCASANOVA", "n": "VALENTINA SOLEDAD CASANOVA", "jp": "RGAMBOAB", "jpn": "ROYE ANDRES GAMBOA BAEZA", "f": "JOSE RICARDO PEREZ RAMONIS", "s": "TECNICO"}, {"u": "FCABRERAC", "n": "FABIAN ANDRES CABRERA", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "CLTORRESR", "n": "CONSTANZA LORENA TORRES", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "CMSAEZ", "n": "CYNTHIA MAGDALENA SAEZ", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "MESAAVEDRAM", "n": "MARCIA ELIM SAAVEDRA", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "MARTHA DE LA CONSOLACION PEREZ OCARIZ", "s": "TECNICO"}, {"u": "KGALLEGOSC", "n": "KAREN JAZMIN GALLEGOS", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "MARTHA DE LA CONSOLACION PEREZ OCARIZ", "s": "TECNICO"}, {"u": "JROBLESV", "n": "JUAN LUIS ROBLES", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "JVASQUEZT", "n": "JAVIERA DEL CIELO ANAIS VASQUEZ", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "BOYARZUNS", "n": "BARBARA DEL PILAR SEPULVEDA", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "MMONTECINOSA", "n": "MICHELLE ESTEFANIA MONTECINOS", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "JJGUTIERREZ", "n": "JUAN JOSE GUTIERREZ", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "DLGONZALEZ", "n": "DANIELA LORETO GONZALEZ", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "DANIELA CONSTANZA JELDRES SUAREZ", "s": "TECNICO"}, {"u": "ALEYTONS", "n": "ALEJANDRA MARLENE LEYTON", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "KHENRIQUEZ", "n": "KEVIN MISAEL HENRIQUEZ", "jp": "CCORNEJOR", "jpn": "CAMILA ARACELIS CORNEJO RIQUELME", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "EALBORNOZV", "n": "ERIKA ANDREA ALBORNOZ", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "JICORTES", "n": "JACQUELINE IVON CORTES", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "MARIA OLGA ESCORZA ESCORZA", "s": "TECNICO"}, {"u": "CJDIAZS", "n": "CONSTANZA JORDANA DIAZ", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "BGARCIA", "n": "BARBARA CONSTANZA GARCIA", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "HAYALA", "n": "HORTENSIA AYALA", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "FRANCHESCA BRANTEZ", "s": "TECNICO"}, {"u": "CFAGUILAR", "n": "CAMILA FERNANDA AGUILAR", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "CPAREDESS", "n": "CAROLINA LISSETTE PAREDES", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "EVELYN FERNANDA MARTINEZ BELMAR", "s": "TECNICO"}, {"u": "ACALDERONC", "n": "ANAIS KATHERINE CALDERON", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "CARLA CONSTANSA CASTILLO ESTIVALES", "s": "TECNICO"}, {"u": "FTVALDERAS", "n": "FERNANDA GODELIS VALDERAS", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "DANIELA PAZ VIGUERA ESCOBAR", "s": "TECNICO"}, {"u": "VJOFREP", "n": "VALESKA RAYEN JOFRE", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "NATALIE ELIZABETH ANNAIS FLORES SOTO", "s": "TECNICO"}, {"u": "JHIDALGOG", "n": "JENNIFER CAMILA HIDALGO", "jp": "DIBARRAL", "jpn": "DANIEL EDUARDO IBARRA LEDESMA", "f": "MARIA OLGA ESCORZAESCORZA", "s": "TECNICO"}];
+var FORMADORES = [
+  {id:'martha',nombre:'MARTHA DE LA CONSOLACION PEREZ',meet:''},
+  {id:'daniela',nombre:'DANIELA PAZ VIGUERA',meet:''},
+  {id:'olga',nombre:'MARIA OLGA ESCORZA',meet:''},
+  {id:'susan',nombre:'SUSAN VERONICA COFRE',meet:''},
+  {id:'soledad',nombre:'SOLEDAD BUSTAMANTE',meet:''},
+];
+
+// ── THEME ─────────────────────────────────────────────────
+function toggleTheme(){
+  var h=document.documentElement,d=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',d?'light':'dark');
+  localStorage.setItem('capsync_theme',d?'light':'dark');
+  setTimeout(function(){if(jpCurrentTab===1)renderJPChart(buildByJP());},100);
+}
+
+// ── ADMIN (Ctrl+Shift+U) ──────────────────────────────────
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey&&e.shiftKey&&e.key==='U'){e.preventDefault();openAdminModal();}
+});
+function openAdminModal(){document.getElementById('adminModal').classList.add('open');setTimeout(function(){document.getElementById('adminUser').focus();},100);}
+function closeAdminModal(){document.getElementById('adminModal').classList.remove('open');document.getElementById('adminUser').value='';document.getElementById('adminStatus').textContent='';}
+function adminLogin(){
+  var user=document.getElementById('adminUser').value.trim().toUpperCase();
+  if(!user||user.length<3){document.getElementById('adminStatus').textContent='Ingresa un usuario válido';return;}
+  closeAdminModal();STATE.currentUser=user;
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('appShell').style.display='flex';
+  switchRole('admin',null);initState();renderAll();simulateSpConnect();
+  toast('Acceso admin: '+user,'blue');
+}
+
+// ── CONFIG ────────────────────────────────────────────────
+var CFG={
+  cuposMax:4,intervalo:30,duracion:60,metaMensual:4,
+  valleyStart:'15:00',valleyEnd:'17:00',pauseStart:'13:00',pauseEnd:'14:00',
+  jornStart:'09:00',jornEnd:'18:00',
+  formsUrl:'https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=feh62z3ZMUSegRRUoEXAz84OJoHe39hDmYoCQSuq3zdUMkRFQVpVNTBKRFVVNkVBMDJLVlA4WEhYVi4u',
+  excelUrl:'https://grupoentel-my.sharepoint.com/:x:/g/personal/jrperezr_entel_cl/IQC_BTVbm5sQTIoSWZwrbFgzAbVA_fab7fkysB9weBSlptU?email=fvmiranda%40entel.cl&e=72n5yp',
+  dotaUrl:'https://grupoentel-my.sharepoint.com/:x:/r/personal/jrperezr_entel_cl/_layouts/15/Doc.aspx?sourcedoc=%7B9FEE3844-E4B0-4B56-BEEA-91C6A37C5551%7D&file=Dota%20Web%20Capacitaciones.xlsx&action=default&mobileredirect=true'
+};
+
+// ── SLOTS ─────────────────────────────────────────────────
+function timeToMin(t){var p=t.split(':');return +p[0]*60+ +p[1];}
+function minToTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+function addMinutes(t,m){var p=t.split(':');return minToTime(+p[0]*60+ +p[1]+m);}
+
+function generateSlots(){
+  var slots=[],s=timeToMin(CFG.jornStart),e=timeToMin(CFG.jornEnd);
+  var pS=timeToMin(CFG.pauseStart),pE=timeToMin(CFG.pauseEnd);
+  var vS=timeToMin(CFG.valleyStart),vE=timeToMin(CFG.valleyEnd);
+  for(var t=s;t<e;t+=CFG.intervalo){
+    var te=t+CFG.duracion;
+    if((t>=pS&&t<pE)||(te>pS&&te<=pE)||(t<pE&&te>pS))continue;
+    slots.push({time:minToTime(t),isValley:(t>=vS&&t<vE),occ:0});
+  }
+  return slots;
+}
+
+var DAYS={
+  lun:{label:'Lunes 14 abr',short:'Lun'},mar:{label:'Martes 15 abr',short:'Mar'},
+  mie:{label:'Miércoles 16 abr',short:'Mié'},jue:{label:'Jueves 17 abr',short:'Jue'},vie:{label:'Viernes 18 abr',short:'Vie'}
+};
+var DAYKEYS=['lun','mar','mie','jue','vie'];
+
+var STATE={slots:{},requests:[],waitList:[],currentRole:'agente',currentUser:'',selectedSlot:null,selectedDay:'lun',history:[]};
+
+function initState(){
+  DAYKEYS.forEach(function(d){
+    STATE.slots[d]=generateSlots().map(function(s){return Object.assign({},s,{occ:Math.floor(Math.random()*(s.isValley?5:4))});});
+  });
+  STATE.requests=[
+    {id:1,agente:'BALVIAL',jp:'KROMERO',dia:'lun',slot:'15:00',modulo:'Navegacion',status:'pendiente',ts:'08:42',formador:'MARTHA DE LA CONSOLACION PEREZ',asistio:false,pos:null},
+    {id:2,agente:'CCARAYA',jp:'KROMERO',dia:'lun',slot:'15:30',modulo:'Habilidades blandas',status:'pendiente',ts:'08:55',formador:'MARIA OLGA ESCORZA',asistio:false,pos:null},
+    {id:3,agente:'DALFARO',jp:'KROMERO',dia:'mar',slot:'09:00',modulo:'Navegacion',status:'pendiente',ts:'09:10',formador:'SUSAN VERONICA COFRE',asistio:false,pos:null},
+    {id:4,agente:'WVALDES',jp:'AROBLESC',dia:'lun',slot:'16:00',modulo:'Habilidades blandas',status:'aprobado',ts:'08:30',formador:'DANIELA PAZ VIGUERA',asistio:false,aprobadoPor:'AROBLESC',pos:null},
+    {id:5,agente:'FAMUNOZG',jp:'AROBLESC',dia:'lun',slot:'15:00',modulo:'Navegacion',status:'aprobado',ts:'08:35',formador:'SOLEDAD BUSTAMANTE',asistio:true,aprobadoPor:'JRPEREZR',pos:null},
+  ];
+  STATE.history=[
+    {agente:'WVALDES',jp:'AROBLESC',modulo:'Navegacion',dia:'lun',slot:'09:00',formador:'DANIELA PAZ VIGUERA',semana:'Sem 14'},
+    {agente:'WVALDES',jp:'AROBLESC',modulo:'Habilidades blandas',dia:'mar',slot:'15:00',formador:'SOLEDAD BUSTAMANTE',semana:'Sem 15'},
+    {agente:'FAMUNOZG',jp:'AROBLESC',modulo:'Navegacion',dia:'mie',slot:'15:30',formador:'MARTHA DE LA CONSOLACION PEREZ',semana:'Sem 14'},
+    {agente:'BALVIAL',jp:'KROMERO',modulo:'Navegacion',dia:'jue',slot:'16:00',formador:'MARIA OLGA ESCORZA',semana:'Sem 15'},
+    {agente:'CCARAYA',jp:'KROMERO',modulo:'Habilidades blandas',dia:'lun',slot:'09:00',formador:'SUSAN VERONICA COFRE',semana:'Sem 14'},
+    {agente:'EALEYTONG',jp:'AROBLESC',modulo:'Navegacion',dia:'vie',slot:'15:00',formador:'DANIELA PAZ VIGUERA',semana:'Sem 13'},
+    {agente:'KGONZALEZO',jp:'AROBLESC',modulo:'Habilidades blandas',dia:'lun',slot:'09:30',formador:'MARTHA DE LA CONSOLACION PEREZ',semana:'Sem 15'},
+    {agente:'MLOPEZR',jp:'KROMERO',modulo:'Navegacion',dia:'mar',slot:'15:00',formador:'SOLEDAD BUSTAMANTE',semana:'Sem 13'},
+    {agente:'PDIAZV',jp:'JRPEREZR',modulo:'Habilidades blandas',dia:'mie',slot:'16:00',formador:'MARIA OLGA ESCORZA',semana:'Sem 14'},
+    {agente:'RGOMEZS',jp:'JRPEREZR',modulo:'Navegacion',dia:'jue',slot:'15:30',formador:'SUSAN VERONICA COFRE',semana:'Sem 15'},
+  ];
+  STATE.waitList=[{name:'EALEYTONG',jp:'AROBLESC',dia:'lun',slot:'15:00',modulo:'Navegacion',pos:1}];
+}
+
+function renderAll(){renderDashboard();renderCalendar();renderPostSlots();renderAprobar();renderFormador();renderJPView();renderResumen();updateBadges();}
+
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg,type){
+  if(!type)type='blue';
+  var w=document.getElementById('toastWrap'),t=document.createElement('div');
+  t.className='toast t-'+type;t.textContent=msg;w.appendChild(t);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},4000);
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+function showScreen(id,el){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  document.getElementById('screen-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  var titles={dashboard:'Dashboard',perfil:'Mi Perfil de Capacitación',miscapas:'Mis Capas',postular:'Postular a capa',aprobar:'Gestión de solicitudes',formador:'Vista Formador',jpview:'Dashboard JP',resumen:'Resumen Ejecutivo',config:'Config / Admin'};
+  document.getElementById('pageTitle').textContent=titles[id]||id;
+  if(id==='aprobar')renderAprobar();
+  if(id==='formador')renderFormador();
+  if(id==='dashboard'){renderDashboard();renderCalendar();}
+  if(id==='postular'){renderPostSlots();updatePostularDisplay();}
+  if(id==='jpview')renderJPView();
+  if(id==='miscapas')renderMisCapas();
+  if(id==='perfil')renderPerfil();
+  if(id==='resumen')renderResumen();
+  if(id==='config')renderFormadorLinksAdmin();
+}
+
+function goPostular(){showScreen('postular',document.getElementById('navPostular'));}
+function logout(){document.getElementById('appShell').style.display='none';document.getElementById('authScreen').style.display='flex';document.getElementById('inputNombre').value='';}
+
+// ── AGENT HELPERS ─────────────────────────────────────────
+function findAgent(u){return DOTACION.find(function(a){return a.u===u.toUpperCase();})||null;}
+
+function getMeetLink(formadorNombre){
+  var saved=JSON.parse(localStorage.getItem('formadorLinks')||'{}');
+  if(!formadorNombre)return '';
+  var fn=formadorNombre.toUpperCase();
+  for(var i=0;i<FORMADORES.length;i++){var f=FORMADORES[i];if(fn.indexOf(f.nombre.split(' ')[0])>=0)return saved[f.id]||'';}
+  return '';
+}
+
+function updatePostularDisplay(){
+  var ag=findAgent(STATE.currentUser);
+  document.getElementById('agenteDisplay').textContent=STATE.currentUser;
+  document.getElementById('jpDisplay').textContent=ag?(ag.jp?ag.jp+' — '+ag.jpn:ag.jpn):'—';
+  updateMeetBanner();
+}
+
+function updateMeetBanner(){
+  var banner=document.getElementById('meetBanner');
+  var myApproved=STATE.requests.filter(function(r){return r.agente===STATE.currentUser&&r.status==='aprobado';});
+  if(!myApproved.length){banner.classList.remove('show');return;}
+  var latest=myApproved[myApproved.length-1];
+  var link=getMeetLink(latest.formador);
+  if(link){banner.classList.add('show');document.getElementById('meetFormadorName').textContent=latest.formador;document.getElementById('meetLinkBtn').href=link;}
+  else banner.classList.remove('show');
+}
+
+// ── AUTH ──────────────────────────────────────────────────
+function entrarComoAgente(){
+  var raw=document.getElementById('inputNombre').value.trim().toUpperCase();
+  if(!raw||raw.length<3){document.getElementById('authStatus').textContent='Ingresa tu usuario (mínimo 3 caracteres)';return;}
+  STATE.currentUser=raw;
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('appShell').style.display='flex';
+  switchRole('agente',null);initState();renderAll();simulateSpConnect();
+}
+
+function enterDemo(role){
+  STATE.currentUser=role==='jp'?'KROMERO':(role==='formador'?'MARTHA':'JRPEREZR');
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('appShell').style.display='flex';
+  switchRole(role,null);initState();renderAll();simulateSpConnect();
+}
+
+function simulateSpConnect(){
+  var saved=localStorage.getItem('capsync_formsUrl'),url=saved||CFG.formsUrl;
+  if(url){CFG.formsUrl=url;var el=document.getElementById('cfgFormsUrl');if(el)el.value=url;setTimeout(function(){setSpStatus(true,'Forms activo ✓');},600);}
+  else setTimeout(function(){setSpStatus(false,'Sin formulario');document.getElementById('spDot').className='sp-dot';},600);
+  var savedEx=localStorage.getItem('capsync_excelUrl');
+  var elEx=document.getElementById('cfgExcelUrl');if(elEx)elEx.value=savedEx||CFG.excelUrl;
+  var savedDota=localStorage.getItem('capsync_dotaUrl');
+  var elDota=document.getElementById('cfgDotaUrl');if(elDota&&savedDota)elDota.value=savedDota;
+  var savedLinks=localStorage.getItem('formadorLinks');
+  if(savedLinks){var links=JSON.parse(savedLinks);FORMADORES.forEach(function(f){if(links[f.id])f.meet=links[f.id];});}
+}
+
+function setSpStatus(ok,msg){
+  var dot=document.getElementById('spDot'),lbl=document.getElementById('spLabel');
+  if(!dot||!lbl)return;
+  dot.className='sp-dot '+(ok?'connected':'disconnected');
+  lbl.textContent='Forms: '+msg;lbl.style.color=ok?'var(--green)':'var(--text3)';
+}
+
+// ── ROLES ─────────────────────────────────────────────────
+var roleConfig={
+  agente:{name:'Agente',roles:['Agente de plataforma'],initials:'AG',color:'#005cff'},
+  jp:{name:'JP',roles:['Jefe de plataforma'],initials:'JP',color:'#42e8b4'},
+  jefe:{name:'JP',roles:['Jefe de plataforma'],initials:'JP',color:'#42e8b4'},
+  formador:{name:'Formador',roles:['Líder de formación'],initials:'FO',color:'#fd6c98'},
+  admin:{name:'Administrador',roles:['Admin sistema'],initials:'AD',color:'#ff3d00'},
+};
+
+function switchRole(role,btnEl){
+  STATE.currentRole=role;
+  var rc=roleConfig[role]||roleConfig['agente'];
+  document.getElementById('userAvatar').textContent=rc.initials;
+  document.getElementById('userAvatar').style.background=rc.color;
+  document.getElementById('userName').textContent=STATE.currentUser||rc.name;
+  document.getElementById('userRole').textContent=rc.roles[0];
+  document.querySelectorAll('.rs-btn').forEach(function(b){b.classList.remove('active');});
+  if(btnEl)btnEl.classList.add('active');
+  else document.querySelectorAll('.rs-btn').forEach(function(b){if(b.textContent.toLowerCase().indexOf(role.slice(0,2))>=0)b.classList.add('active');});
+  var isA=role==='agente',isJ=(role==='jp'||role==='jefe'||role==='admin'),isF=(role==='formador'||role==='admin');
+  document.getElementById('navPerfil').style.display=isA?'flex':'none';
+  document.getElementById('navMiscapas').style.display=isA?'flex':'none';
+  document.getElementById('navPostular').style.display=(isA||role==='admin')?'flex':'none';
+  document.getElementById('navAprobar').style.display=isJ?'flex':'none';
+  document.getElementById('navFormador').style.display=isF?'flex':'none';
+  document.getElementById('navJPView').style.display=isJ?'flex':'none';
+  document.getElementById('navResumen').style.display=isJ?'flex':'none';
+  document.getElementById('navConfig').style.display=role==='admin'?'flex':'none';
+  updateBadges();
+}
+
+function updateBadges(){
+  var pend=STATE.requests.filter(function(r){return r.status==='pendiente';}).length;
+  var apr=STATE.requests.filter(function(r){return r.status==='aprobado';}).length;
+  var mine=STATE.requests.filter(function(r){return r.agente===STATE.currentUser&&r.status==='aprobado';}).length;
+  var bc=document.getElementById('badgeCount');if(bc){bc.textContent=pend;bc.style.display=pend>0?'inline':'none';}
+  var bf=document.getElementById('badgeFormador');if(bf){bf.textContent=apr;bf.style.display=apr>0?'inline':'none';}
+  var bm=document.getElementById('badgeMisCap');if(bm){bm.textContent=mine;bm.style.display=mine>0?'inline':'none';}
+}
+
+// ── CALENDAR ─────────────────────────────────────────────
+function renderCalendar(){
+  var grid=document.getElementById('calGrid');if(!grid)return;
+  var slots=generateSlots();
+  var html='<div class="cal-header"></div>';
+  DAYKEYS.forEach(function(dk){html+='<div class="cal-header">'+DAYS[dk].short+'</div>';});
+  slots.forEach(function(s){
+    html+='<div class="cal-time">'+s.time+'</div>';
+    DAYKEYS.forEach(function(dk){
+      var reqs=STATE.requests.filter(function(r){return r.dia===dk&&r.slot===s.time&&r.status!=='rechazado';});
+      var isValley=s.isValley;
+      var isPause=(timeToMin(s.time)>=timeToMin('13:00')&&timeToMin(s.time)<timeToMin('14:00'));
+      var myReq=reqs.find(function(r){return r.agente===STATE.currentUser;});
+      var cls='cal-cell'+(isValley?' valley':'')+(isPause?' pause':'')+(myReq?' has-me':'');
+      var chips='';
+      reqs.slice(0,2).forEach(function(r){
+        var chipCls=r.agente===STATE.currentUser?'mine':(r.status==='aprobado'?'approved':'pending');
+        chips+='<span class="cal-chip '+chipCls+'">'+r.agente+'</span>';
+      });
+      if(reqs.length>2)chips+='<span class="cal-chip pending">+'+( reqs.length-2)+'</span>';
+      html+='<div class="'+cls+'" title="'+s.time+' '+DAYS[dk].short+'">'+chips+'</div>';
+    });
+  });
+  grid.innerHTML=html;
+}
+
+// ── PERFIL DE AGENTE ──────────────────────────────────────
+function renderPerfil(){
+  var user=STATE.currentUser;
+  var ag=findAgent(user);
+  document.getElementById('perfilAvatar').textContent=user.slice(0,2);
+  document.getElementById('perfilNombre').textContent=ag?ag.n:user;
+  document.getElementById('perfilJP').textContent='JP: '+(ag?ag.jp:'—');
+  document.getElementById('perfilServicio').textContent=ag?ag.s:'—';
+  var myHist=STATE.history.filter(function(h){return h.agente===user;});
+  var myApproved=STATE.requests.filter(function(r){return r.agente===user&&r.status==='aprobado';});
+  var asistidas=STATE.requests.filter(function(r){return r.agente===user&&r.asistio;}).length;
+  var totalCapas=myHist.length+myApproved.length;
+  var pct=CFG.metaMensual>0?Math.min(100,Math.round((totalCapas/CFG.metaMensual)*100)):0;
+  document.getElementById('pStat1').textContent=myApproved.length;
+  document.getElementById('pStat2').textContent=myHist.length+asistidas;
+  document.getElementById('pStat3').textContent=myApproved.length>0?Math.round((asistidas/myApproved.length)*100)+'%':'—';
+  document.getElementById('perfilProgPct').textContent=pct+'%';
+  document.getElementById('perfilProgBar').style.width=pct+'%';
+  document.getElementById('perfilProgBar').style.background=pct>=100?'var(--green)':pct>=50?'var(--accent)':'var(--amber)';
+  // Badges
+  var badges='';
+  if(totalCapas>=1)badges+='<span class="badge b-green" style="margin:2px">&#x1F3C6; Primera capa</span>';
+  if(totalCapas>=4)badges+='<span class="badge b-blue" style="margin:2px">&#x2B50; Meta mensual</span>';
+  if(myHist.filter(function(h){return h.modulo==='Navegacion';}).length>=2)badges+='<span class="badge b-valley" style="margin:2px">&#x1F4CD; Experto Navegación</span>';
+  document.getElementById('perfilBadges').innerHTML=badges?'<div style="margin-top:.5rem">'+badges+'</div>':'';
+  // Historial
+  var hist=document.getElementById('perfilHistorial');
+  var allMine=myHist.concat(myApproved.map(function(r){return {agente:r.agente,jp:r.jp,modulo:r.modulo,dia:r.dia,slot:r.slot,formador:r.formador,semana:'Sem actual',asistio:r.asistio};}));
+  if(!allMine.length){hist.innerHTML='<p style="font-size:13px;color:var(--text3)">Sin historial aún.</p>';return;}
+  hist.innerHTML=allMine.map(function(h){
+    var dayLabel=DAYS[h.dia]?DAYS[h.dia].label:h.dia;
+    return '<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border)">'
+      +'<div style="width:32px;height:32px;border-radius:8px;background:rgba(0,92,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">'
+      +(h.modulo==='Navegacion'?'&#x1F4CD;':'&#x1F91D;')+'</div>'
+      +'<div style="flex:1"><div style="font-size:12.5px;font-weight:700;color:var(--text)">'+h.modulo+'</div>'
+      +'<div style="font-size:10.5px;color:var(--text3)">'+dayLabel+' &middot; '+h.slot+' &middot; '+(h.formador||'—')+'</div></div>'
+      +(h.semana?'<span class="badge b-gray">'+h.semana+'</span>':'')
+      +(h.asistio?'<span class="badge b-green">&#x2713; Asistió</span>':'')
+      +'</div>';
+  }).join('');
+}
+
+// ── MIS CAPAS ─────────────────────────────────────────────
+function renderMisCapas(){
+  var el=document.getElementById('misCapasContent');
+  var myReqs=STATE.requests.filter(function(r){return r.agente===STATE.currentUser;});
+  if(!myReqs.length){
+    el.innerHTML='<div class="alert a-blue"><div class="alert-icon">&#x2139;</div><div>No tienes capas agendadas. <button class="btn btn-sm btn-primary" onclick="goPostular()">Postular ahora &rarr;</button></div></div>';
+    return;
+  }
+  var sc={pendiente:'var(--amber)',aprobado:'var(--green)',rechazado:'var(--red)'};
+  var sb={pendiente:'rgba(253,108,152,.12)',aprobado:'rgba(66,232,180,.12)',rechazado:'rgba(255,61,0,.12)'};
+  el.innerHTML=myReqs.map(function(r){
+    var link=getMeetLink(r.formador);
+    var dayLabel=DAYS[r.dia]?DAYS[r.dia].label:r.dia;
+    return '<div class="booking-item">'
+      +'<div class="bk-time">'+r.slot+'</div>'
+      +'<div class="bk-info">'
+        +'<div class="bk-modulo">'+r.modulo+'</div>'
+        +'<div class="bk-meta">'+dayLabel+' &middot; Formador: '+(r.formador||'&mdash;')+'</div>'
+        +(link&&r.status==='aprobado'?'<a href="'+link+'" target="_blank" class="meet-link-btn" style="margin-top:6px;font-size:11px;padding:5px 12px">&#x1F4F9; Unirse al Meet</a>':'')
+      +'</div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">'
+        +'<span style="padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;background:'+sb[r.status]+';color:'+sc[r.status]+';border:1px solid '+sc[r.status]+'40">'+r.status.toUpperCase()+'</span>'
+        +(r.status!=='rechazado'?'<button class="btn btn-danger btn-sm" data-cid="'+r.id+'" onclick="cancelarCapaBtn(this)">&#x2715; Cancelar</button>':'')
+      +'</div>'
+    +'</div>';
+  }).join('');
+}
+
+function cancelarCapaBtn(btn){cancelarCapa(+btn.getAttribute('data-cid'));}
+function cancelarCapa(id){
+  var r=STATE.requests.find(function(x){return x.id===id;});if(!r)return;
+  var dayLabel=DAYS[r.dia]?DAYS[r.dia].label:r.dia;
+  if(!confirm('¿Cancelar la capa de '+r.slot+' hrs del '+dayLabel+'?'))return;
+  var sl=STATE.slots[r.dia]&&STATE.slots[r.dia].find(function(s){return s.time===r.slot;});
+  if(sl&&sl.occ>0)sl.occ--;
+  var waiting=STATE.waitList.find(function(w){return w.dia===r.dia&&w.slot===r.slot;});
+  if(waiting){
+    toast('Cupo liberado → '+waiting.name+' promovido a lista de aprobados','amber');
+    promoteWait(waiting.name,waiting.dia,waiting.slot,true);
+  }
+  STATE.requests=STATE.requests.filter(function(x){return x.id!==id;});
+  toast('Capa de '+r.slot+' hrs cancelada. Cupo liberado.','amber');
+  updateBadges();renderMisCapas();renderAprobar();renderFormador();renderDashboard();renderCalendar();
+}
+
+// ── POSTULAR ─────────────────────────────────────────────
+function checkDuplicateModule(modulo){
+  return STATE.requests.some(function(r){return r.agente===STATE.currentUser&&r.modulo===modulo&&r.status!=='rechazado';});
+}
+function onModuleChange(){
+  if(STATE.selectedSlot&&!STATE.selectedSlot.full){
+    var dup=checkDuplicateModule(document.getElementById('postModulo').value);
+    document.getElementById('duplicateWarning').style.display=dup?'flex':'none';
+    document.getElementById('btnPostular').disabled=dup;
+  }
+}
+function renderPostSlots(){
+  var dayEl=document.getElementById('postDia');
+  var day=dayEl?dayEl.value:'lun';
+  STATE.selectedDay=day;STATE.selectedSlot=null;
+  var bp=document.getElementById('btnPostular');if(bp)bp.disabled=true;
+  var be=document.getElementById('btnEspera');if(be)be.style.display='none';
+  var si=document.getElementById('slotSelectedInfo');if(si)si.style.display='none';
+  var dw=document.getElementById('duplicateWarning');if(dw)dw.style.display='none';
+  var pn=document.getElementById('postNotif');if(pn)pn.innerHTML='';
+  var tabsEl=document.getElementById('dayTabs');
+  if(tabsEl){
+    tabsEl.innerHTML=Object.entries(DAYS).map(function(kv){
+      return '<button class="day-tab '+(kv[0]===day?'active':'')+'" data-day="'+kv[0]+'" onclick="changeDayTab(this)">'+kv[1].short+'</button>';
+    }).join('');
+  }
+  var daySlots=STATE.slots[day]||[];
+  document.getElementById('valleySlots').innerHTML=daySlots.filter(function(s){return s.isValley;}).map(slotCardHTML).join('');
+  document.getElementById('regularSlots').innerHTML=daySlots.filter(function(s){return !s.isValley;}).map(slotCardHTML).join('');
+}
+function changeDayTab(btn){document.getElementById('postDia').value=btn.getAttribute('data-day');renderPostSlots();}
+function slotCardHTML(s){
+  var avail=CFG.cuposMax-s.occ,full=avail<=0,pct=Math.round((s.occ/CFG.cuposMax)*100);
+  var barColor=pct<50?'var(--green)':pct<100?'var(--amber)':'var(--red)';
+  var cls='slot-card'+(s.isValley?' sc-valley':'')+(full?' sc-full':'');
+  var availColor=full?'var(--red)':avail===1?'var(--amber)':'var(--green)';
+  var availTxt=full?'Lleno':(avail+' libre'+(avail!==1?'s':''));
+  var fn=full?'selectFullSlot':'selectSlot';
+  return '<div class="'+cls+'" id="sc-'+s.time.replace(':','-')+'" data-time="'+s.time+'" onclick="'+fn+'(this.dataset.time)">'
+    +(s.isValley?'<div style="font-size:9px;color:var(--valley);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">&#x2605; Valle</div>':'')
+    +'<div class="slot-time">'+s.time+'</div>'
+    +'<div class="slot-label">hasta '+addMinutes(s.time,CFG.duracion)+'</div>'
+    +'<div class="slot-avail" style="color:'+availColor+'">'+availTxt+'</div>'
+    +'<div class="slot-bar-bg"><div class="slot-bar-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>'
+    +'<div style="font-size:10px;color:var(--text3);margin-top:4px">'+s.occ+'/'+CFG.cuposMax+' cupos</div>'
+    +'</div>';
+}
+function selectSlot(time){
+  document.querySelectorAll('.slot-card').forEach(function(s){s.classList.remove('sc-selected');});
+  var el=document.getElementById('sc-'+time.replace(':','-'));if(el)el.classList.add('sc-selected');
+  STATE.selectedSlot={time:time,full:false};
+  var day=STATE.selectedDay,sl=STATE.slots[day]&&STATE.slots[day].find(function(s){return s.time===time;});
+  var avail=CFG.cuposMax-(sl?sl.occ:0);
+  document.getElementById('slotSelectedInfo').style.display='flex';
+  document.getElementById('slotSelectedText').textContent='Horario: '+time+' hrs — '+avail+' cupo'+(avail!==1?'s':'')+' libre'+(avail!==1?'s':'');
+  var dup=checkDuplicateModule(document.getElementById('postModulo').value);
+  document.getElementById('duplicateWarning').style.display=dup?'flex':'none';
+  document.getElementById('btnPostular').disabled=dup;
+  document.getElementById('btnEspera').style.display='none';
+  document.getElementById('postNotif').innerHTML='';
+}
+function selectFullSlot(time){
+  document.querySelectorAll('.slot-card').forEach(function(s){s.classList.remove('sc-selected');});
+  var el=document.getElementById('sc-'+time.replace(':','-'));if(el)el.classList.add('sc-selected');
+  STATE.selectedSlot={time:time,full:true};
+  document.getElementById('slotSelectedInfo').style.display='flex';
+  document.getElementById('slotSelectedText').textContent='Horario '+time+' hrs sin cupos — lista de espera disponible.';
+  document.getElementById('btnPostular').disabled=true;
+  document.getElementById('btnEspera').style.display='inline-flex';
+  document.getElementById('postNotif').innerHTML='';
+}
+function getFormadorForAgent(){
+  var ag=findAgent(STATE.currentUser);if(!ag||!ag.f)return '';
+  var fn=ag.f.toUpperCase();
+  for(var i=0;i<FORMADORES.length;i++){var f=FORMADORES[i];if(fn.indexOf(f.nombre.split(' ')[0])>=0)return f.nombre;}
+  return ag.f;
+}
+function submitPostulation(){
+  if(!STATE.selectedSlot||STATE.selectedSlot.full)return;
+  var agente=STATE.currentUser||'AGENTE';
+  var ag=findAgent(agente),jp=ag?ag.jp:'';
+  var modulo=document.getElementById('postModulo').value;
+  if(checkDuplicateModule(modulo)){toast('Ya tienes este módulo agendado esta semana','red');return;}
+  var dia=STATE.selectedDay,diaLabel=DAYS[dia].label,slot=STATE.selectedSlot.time;
+  var formador=getFormadorForAgent();
+  var ts=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+  var id=STATE.requests.length+1;
+  STATE.requests.push({id:id,agente:agente,jp:jp,dia:dia,slot:slot,modulo:modulo,status:'pendiente',ts:ts,formador:formador,asistio:false,pos:null});
+  var sl=STATE.slots[dia]&&STATE.slots[dia].find(function(s){return s.time===slot;});
+  if(sl)sl.occ=Math.min(sl.occ+1,CFG.cuposMax);
+  var meetLink=getMeetLink(formador),url=CFG.formsUrl;
+  document.getElementById('postNotif').innerHTML=
+    '<div class="alert a-green"><div class="alert-icon">&#x2713;</div><div>Solicitud lista para <strong>'+diaLabel+' &middot; '+slot+' hrs</strong>. Formador: <strong>'+(formador||'—')+'</strong>'
+    +(meetLink?'<br><a href="'+meetLink+'" target="_blank" style="color:var(--green);font-weight:700;">&#x1F4F9; Link Meet/Aula &rarr;</a>':'')
+    +'</div></div>'
+    +(url?'<a href="'+url+'" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:.625rem;padding:10px 18px;background:var(--accent);color:#fff;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none">&#x1F4CB; Confirmar en Microsoft Forms &rarr;</a>':'');
+  document.getElementById('btnPostular').disabled=true;
+  STATE.selectedSlot=null;updateBadges();renderCalendar();
+  toast('Solicitud de '+agente+' para '+slot+' hrs enviada','green');renderPostSlots();
+}
+function joinWaitList(){
+  if(!STATE.selectedSlot)return;
+  var agente=STATE.currentUser,ag=findAgent(agente),jp=ag?ag.jp:'';
+  var modulo=document.getElementById('postModulo').value;
+  var dia=STATE.selectedDay,slot=STATE.selectedSlot.time;
+  var pos=STATE.waitList.filter(function(w){return w.slot===slot&&w.dia===dia;}).length+1;
+  STATE.waitList.push({name:agente,jp:jp,dia:dia,slot:slot,modulo:modulo,pos:pos});
+  document.getElementById('postNotif').innerHTML='<div class="alert a-blue"><div class="alert-icon">&#x2191;</div><div>En lista de espera posición #'+pos+' para '+slot+' hrs &middot; '+DAYS[dia].label+'. Te avisaremos si se libera un cupo.</div></div>';
+  document.getElementById('btnEspera').style.display='none';STATE.selectedSlot=null;updateBadges();
+  toast(agente+' en lista de espera #'+pos+' para '+slot,'amber');
+}
+
+// ── APROBAR ───────────────────────────────────────────────
+function renderAprobar(){
+  var pend=STATE.requests.filter(function(r){return r.status==='pendiente';});
+  var apr=STATE.requests.filter(function(r){return r.status==='aprobado';});
+  var rec=STATE.requests.filter(function(r){return r.status==='rechazado';});
+  document.getElementById('ap1').textContent=pend.length;
+  document.getElementById('ap2').textContent=apr.length;
+  document.getElementById('ap3').textContent=rec.length;
+  document.getElementById('pendBadge').textContent=pend.length+' pendiente'+(pend.length!==1?'s':'');
+  var colors=['#005cff','#42e8b4','#fd6c98','#ff3d00','#2fcbf1','#a855f7'];
+  var pendEl=document.getElementById('pendList');
+  if(!pend.length){pendEl.innerHTML='<p style="font-size:13px;color:var(--text3);padding:.5rem 0">Sin solicitudes pendientes. ✓</p>';}
+  else{pendEl.innerHTML=pend.map(function(r,i){
+    var c=colors[i%colors.length],dayLabel=DAYS[r.dia]?DAYS[r.dia].label:r.dia;
+    return '<div class="req-row">'
+      +'<div class="req-avatar" style="background:'+c+'22;color:'+c+'">'+r.agente.slice(0,2)+'</div>'
+      +'<div class="req-info">'
+        +'<div class="req-name">'+r.agente+' <span style="font-size:10px;color:var(--text3);margin-left:4px">JP: '+(r.jp||'—')+'</span></div>'
+        +'<div class="req-meta">'+dayLabel+' &middot; '+r.slot+' hrs &middot; '+r.modulo+'</div>'
+        +'<div class="req-meta">Formador: '+(r.formador||'—')+' &middot; '+r.ts+'</div>'
+      +'</div>'
+      +(r.slot>='15:00'&&r.slot<'17:00'?'<span class="badge b-valley">&#x2605; Valle</span>':'')
+      +'<div class="req-actions">'
+        +'<button class="btn btn-success btn-sm" data-rid="'+r.id+'" onclick="approveReqBtn(this)">&#x2713; Aprobar</button>'
+        +'<button class="btn btn-danger btn-sm" data-rid="'+r.id+'" onclick="rejectReqBtn(this)">&#x2715; Rechazar</button>'
+      +'</div></div>';
+  }).join('');}
+  var waitEl=document.getElementById('waitListView');
+  if(!STATE.waitList.length){waitEl.innerHTML='<p style="font-size:13px;color:var(--text3)">Sin agentes en espera.</p>';}
+  else{waitEl.innerHTML=STATE.waitList.map(function(w){
+    var dayLabel=DAYS[w.dia]?DAYS[w.dia].label:w.dia;
+    return '<div class="wait-item">'
+      +'<div class="wait-num">#'+w.pos+'</div>'
+      +'<div style="flex:1"><span style="font-size:13px;font-weight:700;color:var(--text)">'+w.name+'</span>'
+      +' <span class="req-meta">'+dayLabel+' &middot; '+w.slot+' hrs &middot; '+w.modulo+'</span></div>'
+      +'<button class="btn btn-sm btn-success" data-n="'+w.name+'" data-d="'+w.dia+'" data-s="'+w.slot+'" onclick="promoteWaitEl(this)">Promover</button>'
+      +'</div>';
+  }).join('');}
+}
+function approveReqBtn(btn){approveReq(+btn.getAttribute('data-rid'));}
+function rejectReqBtn(btn){rejectReq(+btn.getAttribute('data-rid'));}
+function promoteWaitEl(btn){promoteWait(btn.getAttribute('data-n'),btn.getAttribute('data-d'),btn.getAttribute('data-s'));}
+
+function approveReq(id){
+  var r=STATE.requests.find(function(x){return x.id===id;});if(!r)return;
+  r.status='aprobado';r.aprobadoPor=STATE.currentUser;
+  // Auto-notify (simulated toast)
+  toast('✓ '+r.agente+' aprobado — notificación enviada','green');
+  updateBadges();renderAprobar();renderFormador();renderDashboard();renderCalendar();renderJPView();
+}
+function rejectReq(id){
+  var r=STATE.requests.find(function(x){return x.id===id;});if(!r)return;
+  r.status='rechazado';r.aprobadoPor=STATE.currentUser;
+  var sl=STATE.slots[r.dia]&&STATE.slots[r.dia].find(function(s){return s.time===r.slot;});
+  if(sl)sl.occ=Math.max(0,sl.occ-1);
+  var waiting=STATE.waitList.find(function(w){return w.dia===r.dia&&w.slot===r.slot;});
+  if(waiting){
+    toast('Cupo liberado — '+waiting.name+' promovido de lista de espera','amber');
+    promoteWait(waiting.name,waiting.dia,waiting.slot,true);
+  } else toast('Solicitud de '+r.agente+' rechazada','red');
+  updateBadges();renderAprobar();renderFormador();renderCalendar();
+}
+function promoteWait(name,dia,slot,silent){
+  if(silent===undefined)silent=false;
+  var idx=STATE.waitList.findIndex(function(w){return w.name===name&&w.dia===dia&&w.slot===slot;});if(idx<0)return;
+  var w=STATE.waitList.splice(idx,1)[0];
+  var ag=findAgent(name);
+  STATE.requests.push({id:STATE.requests.length+1,agente:w.name,jp:w.jp||'',dia:w.dia,slot:w.slot,modulo:w.modulo,status:'aprobado',ts:new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}),formador:ag?ag.f:'',asistio:false,aprobadoPor:STATE.currentUser,pos:null});
+  var sl=STATE.slots[dia]&&STATE.slots[dia].find(function(s){return s.time===slot;});
+  if(sl)sl.occ=Math.min(sl.occ+1,CFG.cuposMax);
+  if(!silent)toast(w.name+' promovido a aprobado para '+slot+' hrs','green');
+  updateBadges();renderAprobar();renderFormador();renderCalendar();
+}
+
+// ── FORMADOR — CONFIRMAR ASISTENCIA ───────────────────────
+function renderFormador(){
+  var saved=JSON.parse(localStorage.getItem('formadorLinks')||'{}');
+  var apr=STATE.requests.filter(function(r){return r.status==='aprobado';});
+  var byKey={};
+  apr.forEach(function(r){
+    var k=r.slot+'|'+r.dia;
+    if(!byKey[k])byKey[k]={slot:r.slot,dia:r.dia,agents:[],formador:r.formador};
+    byKey[k].agents.push(r);
+  });
+  var sorted=Object.values(byKey).sort(function(a,b){return a.slot.localeCompare(b.slot);});
+  var el=document.getElementById('formadorBlocks');
+  if(!sorted.length){el.innerHTML='<div class="alert a-blue"><div class="alert-icon">&#x2139;</div><div>Ningún agente aprobado aún.</div></div>';return;}
+  el.innerHTML=sorted.map(function(b){
+    var isV=b.slot>='15:00'&&b.slot<'17:00';
+    var meetLink='';
+    if(b.formador){var fn=b.formador.toUpperCase();for(var i=0;i<FORMADORES.length;i++){var f=FORMADORES[i];if(fn.indexOf(f.nombre.split(' ')[0])>=0){meetLink=saved[f.id]||'';break;}}}
+    var dayLabel=DAYS[b.dia]?DAYS[b.dia].label:b.dia;
+    var confirmed=b.agents.filter(function(a){return a.asistio;}).length;
+    return '<div class="slot-block">'
+      +'<div class="slot-block-header">'
+        +'<div class="slot-block-time">'+b.slot+'</div>'
+        +'<div class="slot-block-dur">hasta '+addMinutes(b.slot,CFG.duracion)+' &middot; '+dayLabel+'</div>'
+        +(isV?'<span class="badge b-valley">&#x2605; Valle</span>':'')
+        +'<span class="badge b-green">'+b.agents.length+' agente'+(b.agents.length!==1?'s':'')+'</span>'
+        +(b.formador?'<span class="badge b-blue">'+b.formador+'</span>':'')
+        +(meetLink?'<a href="'+meetLink+'" target="_blank" class="meet-link-btn" style="font-size:11px;padding:5px 12px">&#x1F4F9; Meet</a>':'<span style="font-size:11px;color:var(--text3)">Sin link Meet</span>')
+        +'<span style="font-size:11px;color:var(--text2);margin-left:auto">&#x2713; '+confirmed+'/'+b.agents.length+' asistieron</span>'
+      +'</div>'
+      +'<div>'+b.agents.map(function(r){
+        return '<span class="agent-chip" style="'+(r.asistio?'border-color:var(--green);background:rgba(66,232,180,.15)':'')+'" title="JP: '+(r.jp||'—')+'">'
+          +r.agente
+          +'<button style="background:none;border:none;cursor:pointer;font-size:11px;margin-left:4px;color:'+(r.asistio?'var(--green)':'var(--text3)')+'" data-rid="'+r.id+'" onclick="toggleAsistencia(this)" title="Confirmar asistencia">'
+          +(r.asistio?'&#x2713;':'&#x25CB;')+'</button></span>';
+      }).join('')+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function toggleAsistencia(btn){
+  var id=+btn.getAttribute('data-rid');
+  var r=STATE.requests.find(function(x){return x.id===id;});if(!r)return;
+  r.asistio=!r.asistio;
+  if(r.asistio){
+    STATE.history.push({agente:r.agente,jp:r.jp,modulo:r.modulo,dia:r.dia,slot:r.slot,formador:r.formador,semana:'Sem actual'});
+    toast('Asistencia confirmada: '+r.agente,'green');
+  } else {
+    STATE.history=STATE.history.filter(function(h){return !(h.agente===r.agente&&h.slot===r.slot&&h.dia===r.dia&&h.semana==='Sem actual');});
+    toast('Asistencia removida: '+r.agente,'amber');
+  }
+  renderFormador();renderDashboard();renderJPView();
+}
+
+// ── JP DASHBOARD ──────────────────────────────────────────
+var jpCurrentTab=1;
+function switchJPTab(n){
+  jpCurrentTab=n;
+  for(var i=1;i<=4;i++){
+    var tab=document.getElementById('jpTab'+i);
+    var content=document.getElementById('jpTabContent'+i);
+    if(tab)tab.className=i===n?'day-tab active':'day-tab';
+    if(content)content.style.display=i===n?'block':'none';
+  }
+  if(n===2)renderWeekChart();
+  if(n===3)renderAgentHistory();
+  if(n===4)renderDotacionTable();
+}
+
+function buildByJP(){
+  var apr=STATE.requests.filter(function(r){return r.status==='aprobado';});
+  var byJP={};
+  apr.forEach(function(r){var jp=r.jp||'Sin JP';if(!byJP[jp])byJP[jp]=0;byJP[jp]++;});
+  return byJP;
+}
+
+function renderJPView(){
+  var apr=STATE.requests.filter(function(r){return r.status==='aprobado';});
+  var asistidas=STATE.requests.filter(function(r){return r.asistio;}).length;
+  var uniqueAgentes=new Set(apr.map(function(r){return r.agente;})).size;
+  var adherencia=DOTACION.length>0?Math.round((uniqueAgentes/DOTACION.length)*100):0;
+  document.getElementById('jp-m1').textContent=uniqueAgentes;
+  document.getElementById('jp-m2').textContent=asistidas;
+  document.getElementById('jp-m3').textContent=DOTACION.length;
+  document.getElementById('jp-m4').textContent=adherencia+'%';
+
+  // Table
+  document.getElementById('jpTableBody').innerHTML=apr.map(function(r){
+    var dayLabel=DAYS[r.dia]?DAYS[r.dia].label:r.dia;
+    return '<tr>'
+      +'<td style="font-weight:700;color:var(--accent)">'+(r.jp||'—')+'</td>'
+      +'<td>'+r.agente+'</td><td>'+r.modulo+'</td><td>'+dayLabel+'</td>'
+      +'<td style="font-weight:700">'+r.slot+'</td>'
+      +'<td>'+(r.formador||'—')+'</td>'
+      +'<td>'+(r.asistio?'<span class="badge b-green">&#x2713; Asistió</span>':'<span class="badge b-gray">Pendiente</span>')+'</td>'
+      +'</tr>';
+  }).join('');
+
+  // Semáforo
+  var byJP=buildByJP();
+  var semaforoEl=document.getElementById('semaforoList');
+  if(semaforoEl){
+    semaforoEl.innerHTML=Object.entries(byJP).sort(function(a,b){return b[1]-a[1];}).map(function(e){
+      var jp=e[0],cnt=e[1];
+      var total=DOTACION.filter(function(a){return a.jp===jp;}).length||1;
+      var pct=Math.round((cnt/total)*100);
+      var semClass=pct>=80?'verde':pct>=50?'amarillo':'rojo';
+      var semLabel=pct>=80?'Alta adherencia':pct>=50?'Adherencia media':'Adherencia baja';
+      return '<div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--border)">'
+        +'<div class="semaforo"><div class="sem-dot '+semClass+'"></div></div>'
+        +'<div style="flex:1">'
+          +'<div style="font-size:13px;font-weight:700;color:var(--text)">'+jp+'</div>'
+          +'<div style="font-size:11px;color:var(--text3)">'+semLabel+' &middot; '+cnt+' de '+total+' agentes ('+pct+'%)</div>'
+        +'</div>'
+        +'<div style="text-align:right">'
+          +'<div style="font-size:18px;font-weight:800;color:var(--text)">'+pct+'%</div>'
+          +'<div style="height:4px;width:80px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:4px">'
+            +'<div style="width:'+pct+'%;height:100%;border-radius:2px;background:'+(semClass==='verde'?'var(--green)':semClass==='amarillo'?'#f59e0b':'var(--red)')+'"></div>'
+          +'</div>'
+        +'</div>'
+        +'</div>';
+    }).join('');
+  }
+  renderJPChart(byJP);
+}
+
+function renderJPChart(byJP){
+  var canvas=document.getElementById('jpChart');if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var entries=Object.entries(byJP).sort(function(a,b){return b[1]-a[1];});
+  var W=canvas.offsetWidth||360,H=220;
+  canvas.width=W;canvas.height=H;
+  ctx.clearRect(0,0,W,H);
+  if(!entries.length)return;
+  var colors=['#005cff','#42e8b4','#fd6c98','#ff3d00','#2fcbf1','#a855f7','#f59e0b','#10b981'];
+  var maxVal=Math.max.apply(null,entries.map(function(e){return e[1];}));
+  var pad=40,gap=(W-pad*2)/entries.length;
+  var barW=Math.min(48,gap-8);
+  var isDark=document.documentElement.getAttribute('data-theme')!=='light';
+  var textColor=isDark?'rgba(120,144,192,0.9)':'rgba(58,80,144,0.9)';
+  ctx.font='11px Inter,sans-serif';
+  entries.forEach(function(e,i){
+    var x=pad+i*gap+gap/2-barW/2;
+    var barH=maxVal>0?((e[1]/maxVal)*(H-70)):0;
+    var y=H-35-barH;
+    ctx.fillStyle=colors[i%colors.length];
+    ctx.beginPath();
+    var r2=5;
+    ctx.moveTo(x+r2,y);ctx.lineTo(x+barW-r2,y);
+    ctx.quadraticCurveTo(x+barW,y,x+barW,y+r2);
+    ctx.lineTo(x+barW,y+barH);ctx.lineTo(x,y+barH);
+    ctx.lineTo(x,y+r2);ctx.quadraticCurveTo(x,y,x+r2,y);
+    ctx.closePath();ctx.fill();
+    ctx.fillStyle=textColor;ctx.textAlign='center';
+    ctx.fillText(e[1],x+barW/2,y-6);
+    var lbl=e[0].length>9?e[0].slice(0,9)+'..':e[0];
+    ctx.fillText(lbl,x+barW/2,H-10);
+  });
+}
+
+// ── COMPARATIVA SEMANAL ───────────────────────────────────
+function renderWeekChart(){
+  var canvas=document.getElementById('weekChart');if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.offsetWidth||600,H=220;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  // Simulate week-over-week data from history
+  var weekData={};
+  STATE.history.forEach(function(h){
+    var w=h.semana||'Sem actual';
+    if(!weekData[w])weekData[w]={nav:0,hab:0};
+    if(h.modulo==='Navegacion')weekData[w].nav++;
+    else weekData[w].hab++;
+  });
+  // Add current week
+  var currentApr=STATE.requests.filter(function(r){return r.status==='aprobado';});
+  weekData['Sem actual']={nav:currentApr.filter(function(r){return r.modulo==='Navegacion';}).length,hab:currentApr.filter(function(r){return r.modulo!=='Navegacion';}).length};
+  var weeks=Object.keys(weekData).sort();
+  if(!weeks.length)return;
+  var isDark=document.documentElement.getAttribute('data-theme')!=='light';
+  var textColor=isDark?'rgba(120,144,192,0.9)':'rgba(58,80,144,0.9)';
+  var gridColor=isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)';
+  var pad=50,gap=(W-pad*2)/weeks.length;
+  var allVals=weeks.map(function(w){return (weekData[w].nav||0)+(weekData[w].hab||0);});
+  var maxVal=Math.max.apply(null,allVals)||1;
+  // Grid lines
+  ctx.strokeStyle=gridColor;ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){var gy=H-35-(g/4)*(H-55);ctx.beginPath();ctx.moveTo(pad,gy);ctx.lineTo(W-10,gy);ctx.stroke();}
+  // Two lines: Navegacion and Habilidades
+  var lineColors={nav:'#005cff',hab:'#42e8b4'};
+  ['nav','hab'].forEach(function(mod){
+    ctx.strokeStyle=lineColors[mod];ctx.lineWidth=2.5;
+    ctx.beginPath();
+    weeks.forEach(function(w,i){
+      var x=pad+i*gap+gap/2;
+      var val=weekData[w][mod]||0;
+      var y=H-35-(val/maxVal)*(H-55);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    // Dots
+    weeks.forEach(function(w,i){
+      var x=pad+i*gap+gap/2,val=weekData[w][mod]||0;
+      var y=H-35-(val/maxVal)*(H-55);
+      ctx.fillStyle=lineColors[mod];ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=textColor;ctx.textAlign='center';ctx.font='10px Inter,sans-serif';
+      ctx.fillText(val,x,y-8);
+    });
+  });
+  // X labels
+  ctx.fillStyle=textColor;ctx.textAlign='center';ctx.font='10px Inter,sans-serif';
+  weeks.forEach(function(w,i){ctx.fillText(w,pad+i*gap+gap/2,H-8);});
+  // Legend
+  ctx.font='11px Inter,sans-serif';
+  ctx.fillStyle='#005cff';ctx.fillRect(pad,10,12,8);ctx.fillStyle=textColor;ctx.textAlign='left';ctx.fillText('Navegación',pad+16,18);
+  ctx.fillStyle='#42e8b4';ctx.fillRect(pad+100,10,12,8);ctx.fillStyle=textColor;ctx.fillText('Habilidades blandas',pad+116,18);
+
+  // Module trend text
+  var trendEl=document.getElementById('moduleTrend');
+  if(trendEl){
+    var latestWeek=weeks[weeks.length-1];
+    var prevWeek=weeks[weeks.length-2];
+    var nav=weekData[latestWeek]?weekData[latestWeek].nav:0;
+    var hab=weekData[latestWeek]?weekData[latestWeek].hab:0;
+    var navPrev=prevWeek&&weekData[prevWeek]?weekData[prevWeek].nav:0;
+    var habPrev=prevWeek&&weekData[prevWeek]?weekData[prevWeek].hab:0;
+    trendEl.innerHTML='<div style="display:flex;gap:1rem;flex-wrap:wrap">'
+      +'<div class="perfil-stat" style="min-width:160px"><div class="perfil-num" style="color:var(--accent)">'+nav+'</div><div class="perfil-lbl">Navegación '+(latestWeek||'')+'</div>'
+      +(navPrev?'<div style="font-size:10px;color:'+(nav>=navPrev?'var(--green)':'var(--red)')+'">'+( nav>=navPrev?'▲ ':'▼ ')+Math.abs(nav-navPrev)+' vs sem. anterior</div>':'')+'</div>'
+      +'<div class="perfil-stat" style="min-width:160px"><div class="perfil-num" style="color:var(--green)">'+hab+'</div><div class="perfil-lbl">Habilidades blandas '+(latestWeek||'')+'</div>'
+      +(habPrev?'<div style="font-size:10px;color:'+(hab>=habPrev?'var(--green)':'var(--red)')+'">'+( hab>=habPrev?'▲ ':'▼ ')+Math.abs(hab-habPrev)+' vs sem. anterior</div>':'')+'</div>'
+      +'</div>';
+  }
+}
+
+// ── AGENT HISTORY ─────────────────────────────────────────
+function renderAgentHistory(){
+  var jpSel=document.getElementById('jpFilterHist');
+  if(jpSel&&jpSel.options.length===1){
+    var jps=[].concat.apply([],DOTACION.map(function(a){return a.jp;})).filter(function(v,i,a){return v&&a.indexOf(v)===i;}).sort();
+    jps.forEach(function(jp){var o=document.createElement('option');o.value=jp;o.textContent=jp;jpSel.appendChild(o);});
+  }
+  filterAgentHistory();
+}
+function filterAgentHistory(){
+  var search=(document.getElementById('agentSearch')||{value:''}).value.toUpperCase();
+  var jpF=(document.getElementById('jpFilterHist')||{value:''}).value;
+  var allData=STATE.history.concat(STATE.requests.filter(function(r){return r.status==='aprobado';}).map(function(r){return {agente:r.agente,jp:r.jp,modulo:r.modulo,dia:r.dia,slot:r.slot,formador:r.formador,semana:'Sem actual'};}));
+  var filtered=allData.filter(function(h){
+    return (!search||(h.agente||'').indexOf(search)>=0)&&(!jpF||h.jp===jpF);
+  });
+  var counts={};
+  filtered.forEach(function(h){var k=h.agente+'|'+h.modulo;counts[k]=(counts[k]||0)+1;});
+  var tbody=document.getElementById('historyTableBody');if(!tbody)return;
+  if(!filtered.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:1rem">Sin registros</td></tr>';return;}
+  tbody.innerHTML=filtered.map(function(h){
+    var dayLabel=DAYS[h.dia]?DAYS[h.dia].label:h.dia;
+    return '<tr><td style="font-weight:700;color:var(--text)">'+h.agente+'</td>'
+      +'<td style="color:var(--accent)">'+h.jp+'</td><td>'+h.modulo+'</td><td>'+dayLabel+'</td>'
+      +'<td>'+h.slot+'</td><td>'+(h.formador||'—')+'</td>'
+      +'<td><span class="badge b-green">'+(counts[h.agente+'|'+h.modulo]||1)+'x</span></td></tr>';
+  }).join('');
+}
+
+// ── DOTACION TABLE ────────────────────────────────────────
+function renderDotacionTable(){
+  var jpSel=document.getElementById('dotJPFilter');
+  if(jpSel&&jpSel.options.length===1){
+    var jps=[].concat.apply([],DOTACION.map(function(a){return a.jp;})).filter(function(v,i,a){return v&&a.indexOf(v)===i;}).sort();
+    jps.forEach(function(jp){var o=document.createElement('option');o.value=jp;o.textContent=jp;jpSel.appendChild(o);});
+  }
+  filterDotacion();
+}
+function filterDotacion(){
+  var search=(document.getElementById('dotSearch')||{value:''}).value.toUpperCase();
+  var jpF=(document.getElementById('dotJPFilter')||{value:''}).value;
+  var filtered=DOTACION.filter(function(a){
+    return (!search||a.u.indexOf(search)>=0||a.n.toUpperCase().indexOf(search)>=0)&&(!jpF||a.jp===jpF);
+  });
+  var tbody=document.getElementById('dotacionTableBody');if(!tbody)return;
+  var allHist=STATE.history.concat(STATE.requests.filter(function(r){return r.asistio;}).map(function(r){return {agente:r.agente,modulo:r.modulo};}));
+  tbody.innerHTML=filtered.map(function(a){
+    var capas=allHist.filter(function(h){return h.agente===a.u;});
+    var lastModule=capas.length?capas[capas.length-1].modulo:'—';
+    var pct=CFG.metaMensual>0?Math.min(100,Math.round((capas.length/CFG.metaMensual)*100)):0;
+    var semClass=pct>=80?'b-green':pct>=50?'b-amber':'b-red';
+    return '<tr><td style="font-weight:800;color:var(--accent)">'+a.u+'</td><td>'+a.n+'</td>'
+      +'<td style="color:var(--valley)">'+a.jp+'</td>'
+      +'<td><span class="badge '+(a.s==='RECLAMOS'?'b-amber':'b-blue')+'">'+a.s+'</span></td>'
+      +'<td><span class="badge b-green">'+capas.length+'</span></td>'
+      +'<td><span class="badge '+semClass+'">'+pct+'%</span></td>'
+      +'<td>'+lastModule+'</td></tr>';
+  }).join('');
+}
+
+// ── RESUMEN EJECUTIVO ─────────────────────────────────────
+function renderResumen(){
+  var el=document.getElementById('resumenContent');if(!el)return;
+  var apr=STATE.requests.filter(function(r){return r.status==='aprobado';});
+  var asistidas=STATE.requests.filter(function(r){return r.asistio;}).length;
+  var uniqueAgentes=new Set(apr.map(function(r){return r.agente;})).size;
+  var adherencia=DOTACION.length>0?Math.round((uniqueAgentes/DOTACION.length)*100):0;
+  var cumplimiento=apr.length>0?Math.round((asistidas/apr.length)*100):0;
+  var navCount=apr.filter(function(r){return r.modulo==='Navegacion';}).length;
+  var habCount=apr.filter(function(r){return r.modulo!=='Navegacion';}).length;
+
+  var byJP={};
+  apr.forEach(function(r){var jp=r.jp||'Sin JP';if(!byJP[jp])byJP[jp]=0;byJP[jp]++;});
+  var topJP=Object.entries(byJP).sort(function(a,b){return b[1]-a[1];})[0];
+
+  el.innerHTML='<div style="border:2px solid var(--border2);border-radius:10px;padding:1.5rem;margin-bottom:1rem">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem">'
+      +'<div><div style="font-size:22px;font-weight:800;color:var(--text)">Resumen Ejecutivo &mdash; Capacitaciones</div>'
+      +'<div style="font-size:12px;color:var(--text3)">Entel ECC &middot; Semana del 14 al 18 de Abril 2025 &middot; Generado '+new Date().toLocaleDateString('es-CL')+'</div></div>'
+      +'<div style="font-size:32px;font-weight:900;color:var(--accent)">'+adherencia+'%</div>'
+    +'</div>'
+    +'<div class="grid-4" style="margin-bottom:1.5rem">'
+      +'<div class="perfil-stat"><div class="perfil-num">'+uniqueAgentes+'</div><div class="perfil-lbl">Agentes capacitados</div></div>'
+      +'<div class="perfil-stat"><div class="perfil-num">'+asistidas+'</div><div class="perfil-lbl">Asistencia confirmada</div></div>'
+      +'<div class="perfil-stat"><div class="perfil-num">'+cumplimiento+'%</div><div class="perfil-lbl">Tasa de cumplimiento</div></div>'
+      +'<div class="perfil-stat"><div class="perfil-num">'+DOTACION.length+'</div><div class="perfil-lbl">Dotación activa</div></div>'
+    +'</div>'
+    +'<hr style="border:none;border-top:1px solid var(--border);margin:1rem 0">'
+    +'<div class="grid-2" style="margin-bottom:1rem">'
+      +'<div><div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem">Por módulo</div>'
+        +'<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem">'
+          +'<span style="font-size:12px;color:var(--text2);width:140px">Navegación</span>'
+          +'<div style="flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden"><div style="width:'+(apr.length?Math.round((navCount/apr.length)*100):0)+'%;height:100%;background:var(--accent);border-radius:3px"></div></div>'
+          +'<span style="font-size:12px;font-weight:700;color:var(--text);width:30px;text-align:right">'+navCount+'</span>'
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:.75rem">'
+          +'<span style="font-size:12px;color:var(--text2);width:140px">Habilidades blandas</span>'
+          +'<div style="flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden"><div style="width:'+(apr.length?Math.round((habCount/apr.length)*100):0)+'%;height:100%;background:var(--green);border-radius:3px"></div></div>'
+          +'<span style="font-size:12px;font-weight:700;color:var(--text);width:30px;text-align:right">'+habCount+'</span>'
+        +'</div>'
+      +'</div>'
+      +'<div><div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem">Sem&#xE1;foro general</div>'
+        +'<div class="semaforo" style="margin-bottom:.5rem"><div class="sem-dot '+(adherencia>=80?'verde':adherencia>=50?'amarillo':'rojo')+'"></div>'
+        +'<span style="font-size:13px;color:var(--text)">'+(adherencia>=80?'Adherencia alta (&#x2265;80%)':adherencia>=50?'Adherencia media (50-79%)':'Adherencia baja (&lt;50%)')+'</span></div>'
+        +(topJP?'<div style="font-size:12px;color:var(--text3)">JP con m&#xE1;s participaci&#xF3;n: <strong style="color:var(--text)">'+topJP[0]+' ('+topJP[1]+' agentes)</strong></div>':'')
+      +'</div>'
+    +'</div>'
+    +'<div style="font-size:11px;color:var(--text3);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">'
+      +'<strong style="color:var(--text2)">Conclusiones:</strong> '+(adherencia>=80?'La semana muestra resultados s&#xF3;lidos. Mantener ritmo actual.':adherencia>=50?'Adherencia en rango medio. Se recomienda reforzar convocatoria a JPs con dotaci&#xF3;n baja.':'Adherencia por debajo del objetivo. Revisar disponibilidad de horarios y comunicar la importancia de la capacitaci&#xF3;n.')
+    +'</div>'
+    +'</div>';
+}
+
+function printResumen(){
+  window.print();
+  toast('Abriendo diálogo de impresión / exportar PDF','blue');
+}
+
+// ── CONFIG ADMIN ──────────────────────────────────────────
+function renderFormadorLinksAdmin(){
+  var saved=JSON.parse(localStorage.getItem('formadorLinks')||'{}');
+  document.getElementById('formadorLinks').innerHTML=FORMADORES.map(function(f){
+    return '<div class="form-group"><label class="form-label">'+f.nombre+'</label>'
+      +'<input type="text" id="link_'+f.id+'" placeholder="https://meet.google.com/..." value="'+(saved[f.id]||'')+'"></div>';
+  }).join('');
+}
+function saveFormadorLinks(){
+  var links={};
+  FORMADORES.forEach(function(f){var v=document.getElementById('link_'+f.id);if(v&&v.value.trim())links[f.id]=v.value.trim();});
+  localStorage.setItem('formadorLinks',JSON.stringify(links));
+  FORMADORES.forEach(function(f){if(links[f.id])f.meet=links[f.id];});
+  document.getElementById('linksStatus').innerHTML='<div class="alert a-green"><div>&#x2713; Links guardados.</div></div>';
+  toast('Links de formadores guardados','green');
+}
+function saveFormsConfig(){
+  CFG.formsUrl=document.getElementById('cfgFormsUrl').value.trim();
+  if(CFG.formsUrl){localStorage.setItem('capsync_formsUrl',CFG.formsUrl);setSpStatus(true,'Forms ✓');document.getElementById('configStatus').innerHTML='<div class="alert a-green"><div>&#x2713; Enlace guardado.</div></div>';toast('Forms configurado','green');}
+  else document.getElementById('configStatus').innerHTML='<div class="alert a-amber"><div>Ingresa la URL.</div></div>';
+}
+function testForms(){var url=CFG.formsUrl||document.getElementById('cfgFormsUrl').value.trim();if(url)window.open(url,'_blank');}
+function openExcel(){var url=document.getElementById('cfgExcelUrl').value.trim()||CFG.excelUrl;if(url){localStorage.setItem('capsync_excelUrl',url);window.open(url,'_blank');}else toast('Ingresa la URL del Excel primero','red');}
+function openDota(){var url=document.getElementById('cfgDotaUrl').value.trim()||CFG.dotaUrl;if(url)window.open(url,'_blank');else toast('Ingresa la URL de dotación primero','red');}
+function saveDotaUrl(){var url=document.getElementById('cfgDotaUrl').value.trim();if(url){CFG.dotaUrl=url;localStorage.setItem('capsync_dotaUrl',url);toast('Link dotación guardado','green');}}
+function exportAsistencia(){var url=document.getElementById('cfgExcelUrl').value.trim()||CFG.excelUrl;if(url){window.open(url,'_blank');toast('Abriendo Excel histórico en SharePoint','green');}else toast('Configura el link del Excel en Admin primero','red');}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function renderDashboard(){
+  var today=STATE.slots['lun']||[];
+  var asistidas=STATE.requests.filter(function(r){return r.asistio;}).length;
+  document.getElementById('m1').textContent=today.filter(function(s){return s.occ>0;}).length;
+  document.getElementById('m2').textContent=STATE.requests.filter(function(r){return r.status==='pendiente';}).length;
+  document.getElementById('m3').textContent=STATE.requests.filter(function(r){return r.status==='aprobado';}).length;
+  document.getElementById('m4').textContent=asistidas;
+  var sc={pendiente:'var(--amber)',aprobado:'var(--green)',rechazado:'var(--red)'};
+  var si={pendiente:'●',aprobado:'✓',rechazado:'✗'};
+  document.getElementById('recentActivity').innerHTML=[].concat(STATE.requests).reverse().slice(0,6).map(function(r){
+    return '<div style="display:flex;align-items:center;gap:.625rem;padding:.5rem 0;border-bottom:1px solid var(--border)">'
+      +'<span style="color:'+sc[r.status]+';font-size:12px;font-weight:700">'+si[r.status]+'</span>'
+      +'<div style="flex:1"><span style="font-size:12px;font-weight:700;color:var(--text)">'+r.agente+'</span>'
+      +' <span style="font-size:11px;color:var(--text3)">&middot; '+r.slot+' &middot; '+r.modulo+'</span></div>'
+      +'<span class="badge '+(r.status==='aprobado'?'b-green':r.status==='rechazado'?'b-red':'b-amber')+'">'+r.status+'</span>'
+      +'</div>';
+  }).join('');
+  var slots=today.filter(function(s){return s.occ>0;}).slice(0,8);
+  if(!slots.length){document.getElementById('todayTimeline').innerHTML='<p style="font-size:12px;color:var(--text3)">Sin actividad.</p>';return;}
+  document.getElementById('todayTimeline').innerHTML=slots.map(function(s){
+    var pct=Math.round((s.occ/CFG.cuposMax)*100);
+    var barC=pct<50?'var(--green)':pct<100?'var(--amber)':'var(--red)';
+    return '<div style="display:flex;align-items:center;gap:.625rem;margin-bottom:.5rem">'
+      +'<span style="font-size:11px;font-weight:600;color:'+(s.isValley?'var(--valley)':'var(--text3)')+';width:42px;flex-shrink:0">'+s.time+'</span>'
+      +'<div style="flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden">'
+        +'<div style="width:'+pct+'%;height:100%;border-radius:3px;background:'+(s.isValley?'var(--valley)':barC)+'"></div>'
+      +'</div>'
+      +'<span style="font-size:10px;color:var(--text3);width:28px;text-align:right">'+s.occ+'/'+CFG.cuposMax+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+// ── INIT ─────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',function(){
+  var t=localStorage.getItem('capsync_theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  var saved=localStorage.getItem('capsync_formsUrl');if(saved)CFG.formsUrl=saved;
+  window.addEventListener('resize',function(){
+    renderCalendar();
+    if(jpCurrentTab===1)renderJPChart(buildByJP());
+    if(jpCurrentTab===2)renderWeekChart();
+  });
+});
+
+</script>
+</body>
+</html>
